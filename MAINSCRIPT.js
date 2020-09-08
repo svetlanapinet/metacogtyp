@@ -9,9 +9,17 @@
 //    return names
 //}
 
-var word_lists = list1;
+//var word_lists = list1;
+//var list_word_shuf = jsPsych.randomization.shuffle(word_lists);
+
+var word_lists = listwords;
 var list_word_shuf = jsPsych.randomization.shuffle(word_lists);
 
+var chunk_lists = listchunks;
+var list_chunk_shuf = jsPsych.randomization.shuffle(chunk_lists);
+
+var nonchunk_lists = listnonchunks;
+var list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 
 
 
@@ -29,6 +37,12 @@ var pause = {
     trial_duration: 500,
 };
 
+var block = {
+    type: 'html-keyboard-response',
+    stimulus: '<p>Begin a new block</p>'+
+	'<p>Press any key</p>',
+};
+
  //
 var mytimeline = []
 var mytimeline2 = {
@@ -36,7 +50,18 @@ var mytimeline2 = {
     timeline_variables:list_word_shuf
   }
 
-mytimeline.push(mytimeline2);
+var mytimeline3 = {
+    timeline: [trial_word,pause],
+    timeline_variables:list_chunk_shuf
+  }
+
+var mytimeline4 = {
+    timeline: [trial_word,pause],
+    timeline_variables:list_nonchunk_shuf
+  }
+
+
+mytimeline.push(block, mytimeline2, block, mytimeline3, block, mytimeline4);
 
 jsPsych.init({
 	timeline: mytimeline,
