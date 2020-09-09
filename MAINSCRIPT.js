@@ -26,7 +26,7 @@ var list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 var trial_word = {
     type: 'html-keyboard-multi-response',
     stimulus:jsPsych.timelineVariable('stimulus'),
-    trial_duration: 2000,
+    trial_duration: 3000,
 	  image: null,
     visual_feedback: 'word',
 };
