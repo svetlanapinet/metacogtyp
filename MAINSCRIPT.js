@@ -27,7 +27,7 @@ var trial_word = {
     type: 'html-keyboard-multi-response',
     stimulus:jsPsych.timelineVariable('stimulus'),
     trial_duration: 2000,
-	image: null,
+	  image: null,
     visual_feedback: 'word',
 };
 
@@ -39,8 +39,9 @@ var pause = {
 };
 
 var mappingreminder = {
-    type: 'html-keyboard-multi-response',
-    image: 'keyboardimg.jpg',
+    type: 'image-keyboard-response',
+    stimulus_height: 500,
+    stimulus: 'keyboardimg.jpg',
     choices: jsPsych.NO_KEYS,
     trial_duration: 2000,
 };
@@ -54,17 +55,17 @@ var block = {
  //
 var mytimeline = []
 var mytimeline2 = {
-    timeline: [trial_word,pause,mappingreminder],
+    timeline: [mappingreminder,trial_word,pause],
     timeline_variables:list_word_shuf
   }
 
 var mytimeline3 = {
-    timeline: [trial_word,pause,mappingreminder],
+    timeline: [mappingreminder,trial_word,pause],
     timeline_variables:list_chunk_shuf
   }
 
 var mytimeline4 = {
-    timeline: [trial_word,pause,mappingreminder],
+    timeline: [mappingreminder,trial_word,pause,],
     timeline_variables:list_nonchunk_shuf
   }
 
