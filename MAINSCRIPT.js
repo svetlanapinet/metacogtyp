@@ -38,8 +38,8 @@ var pause = {
 };
 
 var mappingreminder = {
-    type: 'html-keyboard-response',
-    stimulus: 'keyboardimg.jpg',
+    type: 'html-keyboard-multi-response',
+    image: 'keyboardimg.jpg',
     choices: jsPsych.NO_KEYS,
     trial_duration: 2000,
 };
