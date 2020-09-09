@@ -28,7 +28,7 @@ var trial_word = {
     stimulus:jsPsych.timelineVariable('stimulus'),
     trial_duration: 3000,
 	  image: null,
-    visual_feedback: 'word',
+    visual_feedback: 'aster',
 };
 
 var pause = {
