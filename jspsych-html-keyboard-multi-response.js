@@ -142,7 +142,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         text_element.id = 'jspsych-audio-keyboard-multi-response-feedback';
         text_element.name = 'response-feedback';
         text_element.type = 'text';
-        text_element.size = '40'; // size of the input box
+        text_element.size = '10'; // 40  size of the input box
         if (trial.visual_feedback === 'no') {
           text_element.type = 'text';
           text_element.style.color = 'white';
