@@ -47,7 +47,13 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         pretty_name: 'Prompt',
         default: null,
         description: 'Any content here will be displayed below the stimulus.'
-      },      
+      },
+      image : {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        pretty_name: 'Image',
+        default: undefined,
+        description: 'The image to be displayed'
+      },
       trial_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Trial duration',
@@ -107,6 +113,12 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       if(trial.prompt !== null){
         new_html += trial.prompt;
       }
+    
+    // add image
+    var img_html = '<img src="'+trial.stimulus+'" id="jspsych-image-keyboard-response-stimulus"></img>'; 
+    if (trial.image !== null){
+      new_html += img_html;
+    }
 
       // draw
       display_element.innerHTML = new_html;
