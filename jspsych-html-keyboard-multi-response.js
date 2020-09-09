@@ -106,7 +106,16 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 //    display_element.append('');
       display_element.innerHTML = '';
 
-      var new_html = '<div id="jspsych-html-keyboard-multi-response-stimulus" style="margin-bottom: 1em">'+trial.stimulus+'</div>';
+    var new_html = '';
+    
+    // add image if specified
+    if (trial.image !== null){
+      var img_html = '<img src="'+trial.image+'" id="jspsych-image-keyboard-response-stimulus"></img>';
+      new_html += img_html;
+    }
+    
+      var stim_html = '<div id="jspsych-html-keyboard-multi-response-stimulus" style="margin-bottom: 1em">'+trial.stimulus+'</div>';
+        new_html += stim_html;
 //        var new_html = trial.stimulus;
 
     // add prompt
@@ -119,12 +128,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       display_element.innerHTML = new_html;
 //        display_element.append(new_html);
 
-        
-    // add image if specified
-    if (trial.image !== null){
-      var img_html = '<img src="'+trial.image+'" id="jspsych-image-keyboard-response-stimulus"></img>'; 
-      display_element.append(img_html);
-    }
+
     
     // show feedback on screen if option was selected
 //    if (trial.visual_feedback !== 'no') {
