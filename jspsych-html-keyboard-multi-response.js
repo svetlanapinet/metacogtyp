@@ -122,7 +122,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         
     // add image if specified
     if (trial.image !== null){
-      var img_html = '<img src="'+trial.stimulus+'" id="jspsych-image-keyboard-response-stimulus"></img>'; 
+      var img_html = '<img src="'+trial.image+'" id="jspsych-image-keyboard-response-stimulus"></img>'; 
       display_element.append(img_html);
     }
     
