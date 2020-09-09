@@ -113,17 +113,19 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       if(trial.prompt !== null){
         new_html += trial.prompt;
       }
-    
-    // add image
-    var img_html = '<img src="'+trial.stimulus+'" id="jspsych-image-keyboard-response-stimulus"></img>'; 
-    if (trial.image !== null){
-      new_html += img_html;
-    }
+
 
       // draw
       display_element.innerHTML = new_html;
 //        display_element.append(new_html);
 
+        
+    // add image if specified
+    if (trial.image !== null){
+      var img_html = '<img src="'+trial.stimulus+'" id="jspsych-image-keyboard-response-stimulus"></img>'; 
+      display_element.append(img_html);
+    }
+    
     // show feedback on screen if option was selected
 //    if (trial.visual_feedback !== 'no') {
 //        display_element.innerHTML = '';
