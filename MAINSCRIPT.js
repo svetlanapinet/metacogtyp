@@ -26,7 +26,6 @@ var list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 var trial_word = {
     type: 'html-keyboard-multi-response',
     stimulus:jsPsych.timelineVariable('stimulus'),
-    image: 'keyboardimg.jpg',
     trial_duration: 2000,
     visual_feedback: 'word',
 };
@@ -38,6 +37,13 @@ var pause = {
     trial_duration: 500,
 };
 
+var mappingreminder = {
+    type: 'html-keyboard-response',
+    stimulus: 'keyboardimg.jpg',
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 2000,
+};
+
 var block = {
     type: 'html-keyboard-response',
     stimulus: '<p>Begin a new block</p>'+
@@ -47,17 +53,17 @@ var block = {
  //
 var mytimeline = []
 var mytimeline2 = {
-    timeline: [trial_word,pause],
+    timeline: [trial_word,pause,mappingreminder],
     timeline_variables:list_word_shuf
   }
 
 var mytimeline3 = {
-    timeline: [trial_word,pause],
+    timeline: [trial_word,pause,mappingreminder],
     timeline_variables:list_chunk_shuf
   }
 
 var mytimeline4 = {
-    timeline: [trial_word,pause],
+    timeline: [trial_word,pause,mappingreminder],
     timeline_variables:list_nonchunk_shuf
   }
 
