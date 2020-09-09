@@ -27,6 +27,7 @@ var trial_word = {
     type: 'html-keyboard-multi-response',
     stimulus:jsPsych.timelineVariable('stimulus'),
     trial_duration: 2000,
+	image: null,
     visual_feedback: 'word',
 };
 
