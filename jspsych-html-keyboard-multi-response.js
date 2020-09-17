@@ -51,7 +51,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       image : {
         type: jsPsych.plugins.parameterType.IMAGE,
         pretty_name: 'Image',
-        default: undefined,
+        default: null,
         description: 'The image to be displayed'
       },
       progress_bar : {
