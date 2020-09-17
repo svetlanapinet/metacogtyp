@@ -54,6 +54,12 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         default: undefined,
         description: 'The image to be displayed'
       },
+      progress_bar : {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'Progress Bar',
+        default: true,
+        description: 'Whether a progress bar with the remaining time of the trial should be displayed above the stimulus'
+      },
       trial_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Trial duration',
@@ -112,6 +118,14 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
     if (trial.image !== null){
       var img_html = '<img src="'+trial.image+'" id="jspsych-image-keyboard-response-stimulus"></img>';
       new_html += img_html;
+    }
+
+    if (trial.progress_bar == true){
+      var pgbar_html = '<div style="width: 400px; height: 20px; background-color: #ccc;">' +
+    '<div style="width: 0%; height: 20px; background-color: #333; animation-name: progress-bar; animation-duration:'+trial.trial_duration';animation-timing-function: linear;">' +
+    '</div>' +
+    '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>';
+      new_html += pgbar_html;
     }
     
       var stim_html = '<div id="jspsych-html-keyboard-multi-response-stimulus" style="margin-bottom: 1em">'+trial.stimulus+'</div>';
