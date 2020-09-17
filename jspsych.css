@@ -68,7 +68,7 @@
 }
 
 .trial-progress-bar {
- position: static;
+ vertical-align: bottom;
 }
 
 /* Form elements like input fields and buttons */
