@@ -119,8 +119,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       var dur = trial.trial_duration / 1000;
       var pgbar_html = '<div id = "trial-progress-bar"; style="width: 400px; height: 20px; background-color: #ccc;">' +
     '<div style="width: 0%; height: 20px; position:top; background-color: #333; animation-name: progress-bar; animation-duration:'+dur.toString()+'s;animation-timing-function: linear;">' +
-    '</div>' +
-    '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>';
+    '</div>' ;
       new_html += pgbar_html;
     }
     console.log(pgbar_html);
@@ -141,8 +140,12 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         new_html += trial.prompt;
       }
 
- 
 
+    if (trial.progress_bar == true){
+      var style_pgbar = '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>';
+     new_html += trial.prompt;
+    }
+    
     console.log(new_html);
     
     
