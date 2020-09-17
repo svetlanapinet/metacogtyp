@@ -67,6 +67,10 @@
   line-height: 1.6em;
 }
 
+.trial-progress-bar {
+ position: static;
+}
+
 /* Form elements like input fields and buttons */
 
 /*input[type="text"] {
