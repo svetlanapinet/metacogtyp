@@ -143,7 +143,9 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       }
 
    
-
+    console.log(new_html);
+    
+    
       // draw
       display_element.innerHTML = new_html;
 //        display_element.append(new_html);
