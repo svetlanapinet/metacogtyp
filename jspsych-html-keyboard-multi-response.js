@@ -133,9 +133,9 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
     // add progress bar
     if (trial.progress_bar == true){
       var dur = trial.trial_duration / 1000;
-      var pgbar_html = '<footer style="width: 400px; height: 20px; background-color: #ccc;">' +
-    '<footer style="width: 0%; height: 20px; position:top; background-color: #333; animation-name: progress-bar; animation-duration:'+dur.toString()+'s;animation-timing-function: linear;">' +
-    '</footer>' +
+      var pgbar_html = '<header style="width: 400px; height: 20px; background-color: #ccc;">' +
+    '<header style="width: 0%; height: 20px; position:top; background-color: #333; animation-name: progress-bar; animation-duration:'+dur.toString()+'s;animation-timing-function: linear;">' +
+    '</header>' +
     '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>';
       new_html += pgbar_html;
     }
