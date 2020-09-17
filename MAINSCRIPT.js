@@ -23,7 +23,7 @@ var list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 
 
 
-var trial_word_progress = {
+var trial_word = {
     type: 'html-keyboard-multi-response',
     stimulus:'<div style="width: 600px; height: 20px; background-color: #ccc;">' +
     '<div style="width: 0%; height: 20px; background-color: #333; animation-name: progress-bar; animation-duration: 3s;animation-timing-function: linear;">' +
@@ -35,7 +35,7 @@ var trial_word_progress = {
     visual_feedback: 'aster',
 };
 
-var trial_word = {
+var trial_word2 = {
     type: 'html-keyboard-multi-response',
     stimulus: jsPsych.timelineVariable('stimulus'),
     trial_duration: 3000,
