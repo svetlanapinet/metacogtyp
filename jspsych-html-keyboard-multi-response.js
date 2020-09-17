@@ -128,6 +128,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
     '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>';
       new_html += pgbar_html;
     }
+    console.log(pgbar_html);
     
       var stim_html = '<div id="jspsych-html-keyboard-multi-response-stimulus" style="margin-bottom: 1em">'+trial.stimulus+'</div>';
         new_html += stim_html;
