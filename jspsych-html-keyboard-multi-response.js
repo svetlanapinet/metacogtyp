@@ -143,7 +143,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 
     if (trial.progress_bar == true){
       var style_pgbar = '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>';
-     new_html += trial.prompt;
+     new_html += style_pgbar;
     }
     
     console.log(new_html);
