@@ -76,8 +76,8 @@ function expAK_staircase_function(thisstaircase){
                   if (thisstaircase.r == thisstaircase.nRunHalve){
                         thisstaircase.StepSize  = thisstaircase.StepSize/2;
                         thisstaircase.nRunHalve = thisstaircase.nRunHalve*2;
-                        thisstaircase.SCval = arrayAverage(thisstaircase.last_SCvalerences);
-                        thisstaircase.last_SCvalerences = []; // reset the array that stores SCvalerences values since the last stepsize change
+                        thisstaircase.SCval = arrayAverage(thisstaircase.last_SCval);
+                        thisstaircase.last_SCval = []; // reset the array that stores SCvalerences values since the last stepsize change
                   }
 
             }
