@@ -1,4 +1,4 @@
-function expAK_staircase_function(config){
+function expAK_staircase_function(thisstaircase){
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //-------------------------------------------------------------------------------------------------//
@@ -6,9 +6,9 @@ function expAK_staircase_function(config){
 
       var jsPsych = window['jsPsych'];
 
-      var coh = config.stair.Coh;
-      var lastTrialsCorrect = config.stair.responseMatrix;
-      var dir = config.stair.dir;
+      var SCval = thisstaircase.SCval;
+      var lastTrialsCorrect = thisstaircase.responseMatrix;
+      var dir = thisstaircase.dir;
 
       var back1 = lastTrialsCorrect[lastTrialsCorrect.length-1]; // Last trial
       var back2 = lastTrialsCorrect[lastTrialsCorrect.length-2]; // Two trials ago
@@ -18,14 +18,14 @@ function expAK_staircase_function(config){
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //-------------------------------------------------------------------------------------------------//
-// Update coherence or not and check if there was a reversal
+// Update SCvalerence or not and check if there was a reversal
 
       if(back1) // If the last trial was correct
       {
             if(back2) // AND two trials ago were correct
             {
-                  coh -= config.stair.StepSize
-                  lastTrialsCorrect[lastTrialsCorrect.length-1] = false; // s'il repond correctement à la prochaine ça fera 3 bonne réponses de suite mais il ne faudra pas baisser la cohérence ...
+                  SCval -= thisstaircase.StepSize
+                  lastTrialsCorrect[lastTrialsCorrect.length-1] = false; // s'il repond correctement à la prochaine ça fera 3 bonne réponses de suite mais il ne faudra pas baisser la SCvalérence ...
                   dir[0] = dir[1]; // Set the direction two trials ago to the direction one trial ago
                   dir[1] = "down"; // Set the direction one trial ago to up
                   reverse = check_reversal(dir); // Check if there was a reversal in direction as a result of the step down
@@ -35,31 +35,31 @@ function expAK_staircase_function(config){
       else // If the last trial was wrong
       {
 
-            coh += config.stair.StepSize
+            SCval += thisstaircase.StepSize
             dir[0] = dir[1];
             dir[1] = "up";
             reverse = check_reversal(dir); // Check if there was a reversal in direction as a result of the step up
       }
 
 
-      // Set limits on coh
-      if (coh <= 0){
-            coh = 0
+      // Set limits on SCval
+      if (SCval <= thisstaircase.minval){
+            SCval = thisstaircase.minval
       };
-      if (coh >= 1){
-            coh = 1
+      if (SCval >= thisstaircase.maxval){
+            SCval = thisstaircase.maxval1
       };
 
 
-      // If reversal save coherence and trial nb
-      if (reverse && (config.stair.nTrialSC > 1) ){ // (config.stair.nTrialSC > 1) because we don't want to count the first "down" as a reversal
+      // If reversal save SCvalerence and trial nb
+      if (reverse && (thisstaircase.nTrialSC > 1) ){ // (thisstaircase.nTrialSC > 1) because we don't want to count the first "down" as a reversal
             //console.log("reverse!")
-            //console.log('rev', config.stair.cohRev)
-            //console.log('last', config.stair.last_coherences)
-            config.stair.cohRev.push(config.stair.Coh); // IMPORTANT: we save the coherence value before modification (coh as been changed but not config.stair.Coh yet)
-            config.stair.nTrialRev.push(config.stair.nTrialSC);
-            config.stair.last_coherences.push(config.stair.Coh); // compute a mean when change step size
-            config.stair.r += 1;
+            //console.log('rev', thisstaircase.SCvalRev)
+            //console.log('last', thisstaircase.last_SCvalerences)
+            thisstaircase.SCvalRev.push(thisstaircase.SCval); // IMPORTANT: we save the SCvalerence value before modification (SCval as been changed but not thisstaircase.SCval yet)
+            thisstaircase.nTrialRev.push(thisstaircase.nTrialSC);
+            thisstaircase.last_SCval.push(thisstaircase.SCval); // compute a mean when change step size
+            thisstaircase.r += 1;
       }
 
 
@@ -70,19 +70,19 @@ function expAK_staircase_function(config){
 // Stepsize adaptation
 
       // If min stepsize is not reached, reduce stepsize
-      if (config.stair.variableStepSize){
-            if (config.stair.StepSize > config.stair.min_step_size){
-                  console.log("comp", config.stair.r, config.stair.nRunHalve)
-                  if (config.stair.r == config.stair.nRunHalve){
-                        config.stair.StepSize  = config.stair.StepSize/2;
-                        config.stair.nRunHalve = config.stair.nRunHalve*2;
-                        config.stair.Coh = arrayAverage(config.stair.last_coherences);
-                        config.stair.last_coherences = []; // reset the array that stores coherences values since the last stepsize change
+      if (thisstaircase.variableStepSize){
+            if (thisstaircase.StepSize > thisstaircase.min_step_size){
+                  console.log("comp", thisstaircase.r, thisstaircase.nRunHalve)
+                  if (thisstaircase.r == thisstaircase.nRunHalve){
+                        thisstaircase.StepSize  = thisstaircase.StepSize/2;
+                        thisstaircase.nRunHalve = thisstaircase.nRunHalve*2;
+                        thisstaircase.SCval = arrayAverage(thisstaircase.last_SCvalerences);
+                        thisstaircase.last_SCvalerences = []; // reset the array that stores SCvalerences values since the last stepsize change
                   }
 
             }
       }
-      console.log("stepsize", config.stair.StepSize)
+      console.log("stepsize", thisstaircase.StepSize)
 
 
 
@@ -90,11 +90,11 @@ function expAK_staircase_function(config){
 //-------------------------------------------------------------------------------------------------//
 // Updated the real values
 
-      config.stair.Coh = coh;
-      config.stair.dir = dir;
-      config.stair.responseMatrix = lastTrialsCorrect;
+      thisstaircase.SCval = SCval;
+      thisstaircase.dir = dir;
+      thisstaircase.responseMatrix = lastTrialsCorrect;
 
-      return config;
+      return thisstaircase;
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//

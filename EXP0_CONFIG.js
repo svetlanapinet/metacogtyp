@@ -8,6 +8,44 @@ function EXP0_CONFIG(){
   var height = window.innerHeight;
 
 
+  //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+  //----------------------------------------------------------------------------------------//
+  //                                    STAIRCASE                                           //
+  //----------------------------------------------------------------------------------------//
+  //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+
+  var thisstaircase = {};
+
+  //---------------------------------------------------------------------- //
+  // Parameters that can be changed -------------------------------------- //
+
+  thisstaircase.StepSize                  = 100;
+  thisstaircase.SCval                     = 1800;
+  thisstaircase.min_step_size             = 16;
+  thisstaircase.numTrials                 = 150;// nb max
+  thisstaircase.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
+  thisstaircase.thresholdTrialN           = 40;
+  thisstaircase.nRunHalve                 = 2; // after how many reversals should we reduce stepsize ?
+
+  //---------------------------------------------------------------------- //
+  // Initialisations ----------------------------------------------------- //
+
+  thisstaircase.responseMatrix            = [true]; // save whether past answers where correct
+  thisstaircase.dir                       = ["up", "up"]; // save past coh changes directions
+  thisstaircase.good_rep                  = null; // correct answer or not
+  thisstaircase.nTrials                   = 0; // compteur all trials
+  thisstaircase.nTrialSC                  = 0; // compteur trials où le sujet &agrave; r&eacute;pondu
+  thisstaircase.SCvalRev                  = [];
+  thisstaircase.nTrialRev                 = [];
+  thisstaircase.r                         = 0; // number of reversals
+  thisstaircase.last_SCval                = []; // last coherences at reversal
+  thisstaircase.all_SCval                 = [];
+
+  config.stair                    = thisstaircase;
+
+
+
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //----------------------------------------------------------------------------------------//
 //                                    STIMULI                                             //
@@ -64,32 +102,85 @@ config.list_chunk_shuf = jsPsych.randomization.shuffle(chunk_lists);
 var nonchunk_lists = listnonchunks;
 config.list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 
-
+//console.log('thistaircase', thisstaircase)
 
 var trial_word = {
     type: 'html-keyboard-multi-response',
     stimulus:'<div style="width: 600px; height: 20px; background-color: #ccc;">' +
-    '<div style="width: 0%; height: 20px; background-color: #333; animation-name: progress-bar; animation-duration: 3s;animation-timing-function: linear;">' +
+    '<div style="width: 0%; height: 20px; background-color: #333; animation-name: progress-bar; animation-duration: ' + thisstaircase.SCval/1000 + 's;animation-timing-function: linear;">' +
     '</div>' +
     '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>',
     prompt: jsPsych.timelineVariable('stimulus'),
-    trial_duration: config.len_word,
+    trial_duration: thisstaircase.SCval,
     image: null,
     visual_feedback: 'aster',
-};
+    //data: {thistaircase: thisstaircase,thisword: jsPsych.timelineVariable('stimulus')},
+     //function(thisstaircase){
+     //    var d = []
+      //  d.thistaircase = thisstaircase;
+      //  return d
+    //},
+    on_finish: function(data){
+
+         console.log('ACC', data.acc)
+         console.log('SCval', thisstaircase.SCval)
+
+         thisstaircase.nTrials += 1;
+
+         // get the data of the previous rdk stim
+         //var rdk_data = jsPsych.data.get().last(2).values()[0];
+         var right_answer = data.acc;
+         console.log("bonne rep ?", right_answer)
+         data.CorrectPerceptual = data.acc;
+         thisstaircase.nTrialSC += 1;
+         thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(!!right_answer);
+         thisstaircase = expAK_staircase_function(thisstaircase);
+         //data.dir_stair = thisstaircase.dir[1];
+
+  }}
 
 
+//var trial_word2 = {
+//    type: 'html-keyboard-multi-response',
+//    stimulus: jsPsych.timelineVariable('stimulus'),
+//    trial_duration: config.len_word,
+//    progress_bar: true,
+//    image: null,
+//    visual_feedback: 'aster',
+//};
 
-var trial_word2 = {
-    type: 'html-keyboard-multi-response',
-    stimulus: jsPsych.timelineVariable('stimulus'),
-    trial_duration: config.len_word,
-    progress_bar: true,
-    image: null,
-    visual_feedback: 'aster',
-};
+config.stim_trial_word = trial_word;
 
-config.stim_trial_word = trial_word2;
+// Get the response
+//var get_response = Object.assign({}, config.stim_trial_word);
+//get_response.data = function(){
+//     var d = common_data;
+//     d.screen = "get_response";
+//     return d
+//  };
+ // get_response.on_finish = function(data){
+//     console.log('SCval', config.stair.SCval)
+//
+    // get the data of the previous rdk stim
+//     var rdk_data = jsPsych.data.get().last(2).values()[0];
+//
+//     if (data.key_press != -1){
+//       var right_answer = [data.final] == [trial_word.stimulus];
+//       console.log("bonne rep ?", right_answer)
+//       data.CorrectPerceptual = right_answer;
+//       config.stair.nTrialSC += 1;
+//       config.stair.responseMatrix = config.stair.responseMatrix.concat(!!right_answer);
+//       config = expAK_staircase_function(config);
+//       data.dir_stair = config.stair.dir[1];
+//       data.choice = (_.invert(config.responseSettings))[data.key_press];
+
+//    }else{
+//      data.response = -999;
+//      config.too_late = true;
+//    }
+//    }
+
+
 
 //---------------------------------------------------------------------- //
 // Confidence  ---------------------------------------------------------- //
@@ -137,41 +228,6 @@ var Conf_slider_template = {
 
 config.Conf_slider_template = Conf_slider_template;
 
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
-//----------------------------------------------------------------------------------------//
-//                                    STAIRCASE                                           //
-//----------------------------------------------------------------------------------------//
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
-
-var stair = {};
-
-//---------------------------------------------------------------------- //
-// Parameters that can be changed -------------------------------------- //
-
-stair.StepSize                  = 0.06;
-stair.Coh                       = 0.4;
-stair.min_step_size             = 0.015;
-stair.numTrials                 = 150;// nb max
-stair.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
-stair.thresholdTrialN           = 40;
-stair.nRunHalve                 = 2; // after how many reversals should we reduce stepsize ?
-
-//---------------------------------------------------------------------- //
-// Initialisations ----------------------------------------------------- //
-
-stair.responseMatrix            = [true]; // save whether past answers where correct
-stair.dir                       = ["up", "up"]; // save past coh changes directions
-stair.good_rep                  = null; // correct answer or not
-stair.nTrials                   = 0; // compteur all trials
-stair.nTrialSC                  = 0; // compteur trials où le sujet &agrave; r&eacute;pondu
-stair.cohRev                    = [];
-stair.nTrialRev                 = [];
-stair.r                         = 0; // number of reversals
-stair.last_coherences           = []; // last coherences at reversal
-stair.all_coherences            = [];
-
-config.stair                    = stair;
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//

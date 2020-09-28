@@ -89,13 +89,13 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 //        pretty_name: 'Time allowed for the response',
 //        default: 2000,
 //        description: 'The time between the beep and the boop that marks the deadline.'
-//      },      
+//      },
 //      timing_after_response: {
 //        type: jsPsych.plugins.parameterType.INT,
 //        pretty_name: 'Time after boop deadline',
 //        default: 500,
 //        description: 'The amount of time in milliseconds between the boop that marks the deadline and the end of the trial.'
-//      },      
+//      },
       visual_feedback: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name:'Whether to display something on the screen',
@@ -114,7 +114,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 
     var new_html = '';
 
- 
+
     // add progress bar
 //    if (trial.progress_bar == true){
 //      var dur = trial.trial_duration / 1000;
@@ -140,17 +140,17 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       if(trial.prompt !== null){
         new_html += trial.prompt;
       }
-    
-    
 
-    
-    
+
+      console.log('TYPETHIS',trial.prompt)
+
+
       // draw
       display_element.innerHTML = new_html;
 //        display_element.append(new_html);
 
 
-    
+
     // show feedback on screen if option was selected
 //    if (trial.visual_feedback !== 'no') {
 //        display_element.innerHTML = '';
@@ -176,14 +176,14 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         text_element.style.border = 'none';
         text_element.style.fontSize = '26px';
 //        text_element.style.fontFamily = 'Courier';
-        text_element.disabled = false; // change to true 
+        text_element.disabled = false; // change to true
         display_element.append(text_element);
 
 //        text_element.focus();
 //        text_element.addEventListener('input');
 //    }
 
- 
+
     // store response
 //    var response = {
 //      rt: null,
@@ -191,12 +191,13 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 //    };
       var responseTimes = [];
       var responseTypingTimes = [];
-      // array for response keys 
+      // array for response keys
       var responseKeys = [];
       var finalKeys = "";
       var finalResp = "";
       var errdetect = null;
-      
+      var accuracy = null;
+
     // function to end trial when it is time
     function end_trial() {
 
@@ -230,6 +231,7 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         "total_response": finalKeys,
         "final": finalResp,
         "error": errdetect,
+        "acc": accuracy,
       };
 
       // clear the display
@@ -258,6 +260,8 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 
       text = document.getElementById('jspsych-audio-keyboard-multi-response-feedback');
       finalResp = text.value + jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
+      accuracy = finalResp == trial.prompt;
+      //console.log('Acc',accuracy)
 
 //      console.log(finalKeys)
 //      console.log(finalResp)
@@ -318,6 +322,6 @@ var getResponse = function() {
 
   };
 
- 
+
   return plugin;
 })();
