@@ -33,14 +33,14 @@ var timelinewords = {
 // ----------------------------------------------------------------------------
 // TRIALS CHUNKS -------------------------------------------------------------
 var timelinechunks = {
-    timeline: [config.stim_trial_word,config.Conf_slider_template,config.stim_pause],
+    timeline: [config.stim_trial_word,Conf_slider,config.stim_pause],
     timeline_variables:config.list_chunk_shuf
   }
 
 // ----------------------------------------------------------------------------
 // TRIALS NON-CHUNKS ---------------------------------------------------------
 var timelinenonchunks = {
-    timeline: [config.stim_trial_word,config.Conf_slider_template,config.stim_pause],
+    timeline: [config.stim_trial_word,Conf_slider,config.stim_pause],
     timeline_variables:config.list_nonchunk_shuf
   }
 

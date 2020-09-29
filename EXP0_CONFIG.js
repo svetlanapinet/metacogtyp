@@ -54,7 +54,7 @@ function EXP0_CONFIG(){
 
 //---------------------------------------------------------------------- //
 // Timings ------------------------------------------------------------- //
-config.len_conf               = 3000; //3000;
+config.len_conf               = 1000; //3000;
 config.len_fixation           = 900;//900;
 config.len_respmapremind      = 2000;
 config.len_word               = 3000;
