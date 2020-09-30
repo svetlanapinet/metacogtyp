@@ -25,7 +25,7 @@ Conf_slider.start = function() {
 // ----------------------------------------------------------------------------
 // TRIALS WORD ---------------------------------------------------------------
 var timelinewords = {
-    timeline: [config.stim_trial_word,config.stim_pause], //Conf_slider,
+    timeline: [config.stim_trial_word,Conf_slider,config.stim_pause], //Conf_slider,
     timeline_variables:config.list_word_shuf
   }
 
