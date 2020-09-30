@@ -20,7 +20,7 @@ function EXP0_CONFIG(){
   // Parameters that can be changed -------------------------------------- //
 
   thisstaircase.StepSize                  = 100;
-  thisstaircase.SCval                     = 1800;
+  thisstaircase.SCval                     = 4000;
   thisstaircase.min_step_size             = 16;
   thisstaircase.numTrials                 = 150;// nb max
   thisstaircase.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
@@ -54,7 +54,7 @@ function EXP0_CONFIG(){
 
 //---------------------------------------------------------------------- //
 // Timings ------------------------------------------------------------- //
-config.len_conf               = 1000; //3000;
+config.len_conf               = 60000; //3000; MAX DURATION OF THE CONFIDENCE
 config.len_fixation           = 900;//900;
 config.len_respmapremind      = 2000;
 config.len_word               = 3000;
@@ -64,7 +64,7 @@ config.len_word               = 3000;
 var block = {
     type: 'html-keyboard-response',
     stimulus: '<p>Begin a new block</p>'+
-	'<p>Press any key</p>',
+	'<p>Press any key </p>',
 };
 config.stim_block = block;
 
@@ -103,6 +103,7 @@ var nonchunk_lists = listnonchunks;
 config.list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 
 //console.log('thistaircase', thisstaircase)
+//console.log('try to select right key',rangei(48,90))
 
 var trial_word = {
     type: 'html-keyboard-multi-response',
@@ -111,15 +112,11 @@ var trial_word = {
     '</div>' +
     '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>',
     prompt: jsPsych.timelineVariable('stimulus'),
+    promptincap: true,
     trial_duration: thisstaircase.SCval,
     image: null,
     visual_feedback: 'aster',
-    //data: {thistaircase: thisstaircase,thisword: jsPsych.timelineVariable('stimulus')},
-     //function(thisstaircase){
-     //    var d = []
-      //  d.thistaircase = thisstaircase;
-      //  return d
-    //},
+    choices: rangei(48,90),
     on_finish: function(data){
 
          console.log('ACC', data.acc)
@@ -198,7 +195,7 @@ config.Conf_size               = function(){
                                 }//width/2;
 config.Conf_stim               = ''; //"How much did you feel in control ?";
 config.Conf_choices            = [70, 74]; // F and J
-config.Conf_speed              = 100; // how often the slider position is updated (in ms)
+config.Conf_speed              = 300; // how often the slider position is updated (in ms)
 config.Conf_step               = 1;
 
 // randomize Conf labels positions
@@ -223,7 +220,9 @@ var Conf_slider_template = {
     max: config.Conf_limits[1],
     step: config.Conf_step,
     choices: config.Conf_choices,
-    speed: config.Conf_speed
+    speed: config.Conf_speed,
+    trial_duration: config.len_conf,
+
 }
 
 config.Conf_slider_template = Conf_slider_template;
@@ -328,6 +327,15 @@ function arrayAverage(arr){
 }
 config.arrayAverage = arrayAverage;
 
+// Range of numbers
+function rangei(start,end){
+  return Array(end - start + 1).fill().map((_, idx) => start + idx)
+
+  // var list = [];
+  // for (var i = lowEnd; i <= highEnd; i++) {
+    // list.push(i);
+    // return list
+}
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 

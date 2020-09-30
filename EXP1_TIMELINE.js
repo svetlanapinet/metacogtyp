@@ -10,7 +10,6 @@ var Conf_slider = Object.assign({}, config.Conf_slider_template);
 Conf_slider.start = function() {
     return Math.floor(Math.random() * config.Conf_limits[1])
 };
-Conf_slider.trial_duration = config.len_conf;
 //Conf_slider.data = function(){
 //                    var d = common_data;
 //                    d.screen = "Conf_slider";
@@ -26,7 +25,7 @@ Conf_slider.trial_duration = config.len_conf;
 // ----------------------------------------------------------------------------
 // TRIALS WORD ---------------------------------------------------------------
 var timelinewords = {
-    timeline: [config.stim_trial_word,Conf_slider,config.stim_pause],
+    timeline: [config.stim_trial_word,config.stim_pause], //Conf_slider,
     timeline_variables:config.list_word_shuf
   }
 

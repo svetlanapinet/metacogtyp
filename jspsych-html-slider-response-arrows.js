@@ -104,9 +104,9 @@ jsPsych.plugins['html-slider-response'] = (function() {
         description: 'How long to show the trial.'
       },
       response_ends_trial: {
-        type: jsPsych.plugins.parameterType.BOOL,
+        type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Response ends trial',
-        default: true,
+        default: 32, // space-bar
         description: 'If true, trial will end when user makes a response.'
       },
     }
@@ -154,6 +154,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
       var in_slider_plugin = true;
       var arrow_pressed = false;
+      var spacebarpressed = false;
 
       var relevant_keys = [trial.key_to_end, trial.choices[0], trial.choices[1]];
 
@@ -198,6 +199,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
       }
   })
+  //console.log('button end trial',trial.response_ends_trial)
 
   document.addEventListener('keyup', function(e){
     // "document" is global, so do it only if we are using this pluggin
@@ -206,16 +208,27 @@ jsPsych.plugins['html-slider-response'] = (function() {
         var k = e.keyCode;
         console.log('in keyup', k)
           arrow_pressed = false;
+          if(k == trial.response_ends_trial){
+            spacebarpressed = true;
+            response.response = display_element.querySelector('#jspsych-html-slider-response-response').value;
+            end_trial();
+        }
       }
     }
 
   })
 
+  console.log('Someone pressed the spacebar',     )
 
+
+    // End the trial if the spacebar button is arrow_pressed
+     if(spacebarpressed == true){
+       console.log('Someone pressed the spacebar', spacebarpressed)
+     }
 
 
     // update response when trial_duration is over (now that there is not continue button)
-    if (trial.trial_duration !== null) {
+    if (trial.trial_duration !== null ) {
     jsPsych.pluginAPI.setTimeout(function() {
         response.response = display_element.querySelector('#jspsych-html-slider-response-response').value;
         in_slider_plugin = false;
@@ -236,6 +249,8 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
       jsPsych.pluginAPI.clearAllTimeouts();
 
+      // kill keyboard listeners
+      jsPsych.pluginAPI.cancelAllKeyboardResponses();
 
 
       // save data

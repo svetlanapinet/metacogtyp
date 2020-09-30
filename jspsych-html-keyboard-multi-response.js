@@ -48,6 +48,12 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         default: null,
         description: 'Any content here will be displayed below the stimulus.'
       },
+      promptincap: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'CapPrompt',
+        default: null,
+        description: 'Whether to capitalize prompt or not.'
+      },
       image : {
         type: jsPsych.plugins.parameterType.IMAGE,
         pretty_name: 'Image',
@@ -136,9 +142,11 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         new_html += stim_html;
 //        var new_html = trial.stimulus;
 
+
+
     // add prompt
       if(trial.prompt !== null){
-        new_html += trial.prompt;
+        new_html += trial.prompt.toUpperCase();
       }
 
 
@@ -171,12 +179,14 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
         if (trial.visual_feedback === 'word') {text_element.type = 'text'};
         if (trial.visual_feedback === 'aster') {text_element.type = 'password'};
         text_element.autofocus = true;
-        text_element.autocapitalize = false;
+        text_element.autoitalize = true;
         text_element.spellcheck = false;
         text_element.style.border = 'none';
         text_element.style.fontSize = '26px';
+        text_element.maxLength = 4;
 //        text_element.style.fontFamily = 'Courier';
         text_element.disabled = false; // change to true
+        //console.log('whats inside text_element',text_element)
         display_element.append(text_element);
 
 //        text_element.focus();
@@ -261,10 +271,11 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
       text = document.getElementById('jspsych-audio-keyboard-multi-response-feedback');
       finalResp = text.value + jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
       accuracy = finalResp == trial.prompt;
-      //console.log('Acc',accuracy)
+      console.log('Acc',accuracy)
+      console.log('text.value',text.value)
 
-//      console.log(finalKeys)
-//      console.log(finalResp)
+      console.log('FINAL KEYS',finalKeys)
+      console.log('FINAL RESP',finalResp)
       if (finalKeys.toUpperCase() === 'YES' || finalResp.toUpperCase() === 'YES') {
         errdetect = 1;
         setTimeout(function() {end_trial();}, 200);
@@ -292,12 +303,14 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
     };
 
 
+//console.log('These are the keys',trial.choices)
+
 
 var getResponse = function() {
     // start the response listener
     var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
         callback_function: after_response,
-        valid_responses: trial.choices,
+        valid_responses: [65],
         rt_method: 'date',
         persist: true,
         allow_held_key: false
@@ -311,7 +324,7 @@ var getResponse = function() {
     if (trial.trial_duration !== null) {
       jsPsych.pluginAPI.setTimeout(function() {
         end_trial();
-        console.log('trial is over');
+        //console.log('trial is over');
       }, trial.trial_duration);
     }
   };
