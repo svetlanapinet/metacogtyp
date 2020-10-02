@@ -65,7 +65,8 @@ mytimeline.push(config.stim_block, timelinewords);
 // EXECUTE TIMELINE ------------------------------------------------------------
 jsPsych.init({
 	timeline: mytimeline,
-  on_finish: jspsychr.save_locally
-//  function() {
-//    jsPsych.data.displayData('json');}
+  on_finish:
+//  jspsychr.save_locally,
+  function() {
+    jsPsych.data.displayData('json');}
 });
