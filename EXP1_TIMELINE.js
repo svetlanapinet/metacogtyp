@@ -56,13 +56,16 @@ var timelinenonchunks = {
 var mytimeline = []
 mytimeline.push(config.stim_block, timelinewords, config.stim_block, timelinechunks, config.stim_block, timelinenonchunks);
 
-
+if (config.test == true) {var mytimeline = []
+mytimeline.push(config.stim_block, timelinewords);
+}
 
 // *****************************************************************************
 // -----------------------------------------------------------------------------
 // EXECUTE TIMELINE ------------------------------------------------------------
 jsPsych.init({
 	timeline: mytimeline,
-  on_finish: function() {
-    jsPsych.data.displayData('json');}
+  on_finish: jspsychr.save_locally
+//  function() {
+//    jsPsych.data.displayData('json');}
 });

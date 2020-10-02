@@ -1,3 +1,8 @@
+var listtest = [
+{stimulus:"poet",data:"words"},
+{stimulus:"pore",data:"words"},
+{stimulus:"pure",data:"words"}];
+
 var listwords = [
 {stimulus:"poet",data:"words"},
 {stimulus:"pore",data:"words"},

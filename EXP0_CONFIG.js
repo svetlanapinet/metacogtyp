@@ -7,6 +7,8 @@ function EXP0_CONFIG(){
   var width = window.innerWidth;
   var height = window.innerHeight;
 
+config.test = true;
+
 
   //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
   //----------------------------------------------------------------------------------------//
@@ -94,6 +96,7 @@ config.stim_pause = pause;
 // Words  ----------------------------------------------------------- //
 
 var word_lists = listwords;
+if (config.test == true) {word_lists = listtest;}
 config.list_word_shuf = jsPsych.randomization.shuffle(word_lists);
 
 var chunk_lists = listchunks;
