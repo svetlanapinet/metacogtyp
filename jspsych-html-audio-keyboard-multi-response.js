@@ -79,7 +79,7 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
     // add prompt
     if(trial.prompt !== null){
       var thistring =  trial.prompt.toUpperCase();
-      document.getElementByName('thistring').style.fontFamily =  'text-security-disc';
+  //    document.getElementByName('thistring').style.fontFamily =  'text-security-disc';
       new_html += '</div> ' + thistring + '</div> ';
     }
 
@@ -92,6 +92,14 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
       key: [],
       char: []
     };
+
+    // feedback element
+    var feedback_element = document.createElement('p');
+    feedback_element.style.fontSize = '32px';
+    feedback_element.id = 'typing-feedback';
+    feedback_element.style.fontFamily = 'text-security-disc';
+    feedback_element.innerHTML = '';
+    display_element.append(feedback_element);
 
     // function to end trial when it is time
     var end_trial = function() {
@@ -114,6 +122,7 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
 
       // clear the display
       display_element.innerHTML = '';
+      feedback_element.innerHTML = '';
 
       // move on to the next trial
       jsPsych.finishTrial(trial_data);
@@ -141,7 +150,12 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
       response.key.push(info.key);
       response.rt.push(info.rt);
       response.char.push(String.fromCharCode(info.key));
-     display_element.innerHTML += String.fromCharCode(info.key).toUpperCase();
+//     display_element.innerHTML += String.fromCharCode(info.key).toUpperCase();
+//     display_element.style.fontFamily =  'text-security-disc';
+
+     feedback_element.innerHTML += String.fromCharCode(info.key).toUpperCase();
+     display_element.append(feedback_element);
+
      //display_element.innerHTML += "a";
      //document.getElementById("typing_feedback").innerHTML += String.fromCharCode(info.key);
 

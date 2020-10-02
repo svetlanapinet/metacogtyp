@@ -7,7 +7,7 @@
 
  /* Container holding jsPsych content */
 
- 
+
  .jspsych-display-element {
    display: flex;
    flex-direction: column;
@@ -51,14 +51,20 @@
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 
-@font-face {
+/* @font-face {
     font-family: 'text-security-disc';
-    src: url('/static/fonts/text-security-disc.eot'),
-    url('/static/fonts/text-security-disc.eot?#iefix') format('embedded-opentype'),
-    url('/static/fonts/text-security-disc.woff') format('woff'),
-    url('/static/fonts/text-security-disc.ttf') format('truetype'),
-    url('/static/fonts/text-security-disc.svg#text-security') format('svg');
+    src: url('fonts/text-security-disc.eot'),
+    url('fonts/text-security-disc.eot?#iefix') format('embedded-opentype'),
+    url('fonts/text-security-disc.woff') format('woff'),
+    url('fonts/text-security-disc.ttf') format('truetype'),
+    url('fonts/text-security-disc.svg#text-security') format('svg');
 } /*this is the fake password font, requires "/"" before static in psiturk structure*/
+
+@font-face{font-family:'text-security-disc';
+src:url('text-security-disc-compat.eot');
+src:url('text-security-disc-compat.eot?#iefix') format('embedded-opentype'),
+url('text-security-disc.woff2') format('woff2'),
+url('text-security-disc-compat.ttf') format('truetype')}
 
 
 .jspsych-display-element {
@@ -167,5 +173,3 @@ input.word{
   font-size: 16px;
   line-height: 1.6em;
 }
-
-
