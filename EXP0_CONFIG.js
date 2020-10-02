@@ -106,12 +106,9 @@ config.list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 //console.log('try to select right key',rangei(48,90))
 
 var trial_word = {
-    type: 'html-keyboard-multi-response',
-    stimulus:'<div style="width: 600px; height: 20px; background-color: #ccc;">' +
-    '<div style="width: 0%; height: 20px; background-color: #333; animation-name: progress-bar; animation-duration: ' + thisstaircase.SCval/1000 + 's;animation-timing-function: linear;">' +
-    '</div>' +
-    '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>',
-    prompt: jsPsych.timelineVariable('stimulus'),
+    type: 'html-audio-keyboard-multi-response',
+    stimulus:jsPsych.timelineVariable('stimulus'),
+    progressbar:true,
     promptincap: true,
     trial_duration: thisstaircase.SCval,
     image: null,
