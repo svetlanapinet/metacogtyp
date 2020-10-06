@@ -7,7 +7,13 @@ function EXP0_CONFIG(){
   var width = window.innerWidth;
   var height = window.innerHeight;
 
-config.test = true;
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+//----------------------------------------------------------------------------------------//
+//                                    DEBUG OR NOT                                        //
+//----------------------------------------------------------------------------------------//
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+
+config.debug = true; // Shorter stimulus sequence
 
 
   //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -22,7 +28,7 @@ config.test = true;
   // Parameters that can be changed -------------------------------------- //
 
   thisstaircase.StepSize                  = 100;
-  thisstaircase.SCval                     = 4000;
+  thisstaircase.SCval                     = 2000;
   thisstaircase.min_step_size             = 16;
   thisstaircase.numTrials                 = 150;// nb max
   thisstaircase.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
@@ -56,7 +62,7 @@ config.test = true;
 
 //---------------------------------------------------------------------- //
 // Timings ------------------------------------------------------------- //
-config.len_conf               = 60000; //3000; MAX DURATION OF THE CONFIDENCE
+config.len_conf               = 600000; //3000; MAX DURATION OF THE CONFIDENCE
 config.len_fixation           = 900;//900;
 config.len_respmapremind      = 2000;
 config.len_word               = 3000;
@@ -96,7 +102,7 @@ config.stim_pause = pause;
 // Words  ----------------------------------------------------------- //
 
 var word_lists = listwords;
-if (config.test == true) {word_lists = listtest;}
+if (config.debug == true) {word_lists = listtest;}
 config.list_word_shuf = jsPsych.randomization.shuffle(word_lists);
 
 var chunk_lists = listchunks;
@@ -137,45 +143,8 @@ var trial_word = {
   }}
 
 
-//var trial_word2 = {
-//    type: 'html-keyboard-multi-response',
-//    stimulus: jsPsych.timelineVariable('stimulus'),
-//    trial_duration: config.len_word,
-//    progress_bar: true,
-//    image: null,
-//    visual_feedback: 'aster',
-//};
 
 config.stim_trial_word = trial_word;
-
-// Get the response
-//var get_response = Object.assign({}, config.stim_trial_word);
-//get_response.data = function(){
-//     var d = common_data;
-//     d.screen = "get_response";
-//     return d
-//  };
- // get_response.on_finish = function(data){
-//     console.log('SCval', config.stair.SCval)
-//
-    // get the data of the previous rdk stim
-//     var rdk_data = jsPsych.data.get().last(2).values()[0];
-//
-//     if (data.key_press != -1){
-//       var right_answer = [data.final] == [trial_word.stimulus];
-//       console.log("bonne rep ?", right_answer)
-//       data.CorrectPerceptual = right_answer;
-//       config.stair.nTrialSC += 1;
-//       config.stair.responseMatrix = config.stair.responseMatrix.concat(!!right_answer);
-//       config = expAK_staircase_function(config);
-//       data.dir_stair = config.stair.dir[1];
-//       data.choice = (_.invert(config.responseSettings))[data.key_press];
-
-//    }else{
-//      data.response = -999;
-//      config.too_late = true;
-//    }
-//    }
 
 
 
@@ -238,10 +207,10 @@ config.Conf_slider_template = Conf_slider_template;
 //---------------------------------------------------------------------- //
 // What parts to do ---------------------------------------------------- //
 
-var to_do = {};
-to_do.staircase                     = false;
-to_do.experiment                    = false;
-config.to_do                        = to_do;
+//var to_do = {};
+//to_do.staircase                     = false;
+//to_do.experiment                    = false;
+//config.to_do                        = to_do;
 
 
 //---------------------------------------------------------------------- //

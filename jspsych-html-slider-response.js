@@ -201,7 +201,9 @@ jsPsych.plugins['html-slider-response'] = (function() {
   })
   //console.log('button end trial',trial.response_ends_trial)
 
-  document.addEventListener('keyup', function(e){
+  document.addEventListener('keyup',Imlistening)
+
+  function Imlistening(e){
     // "document" is global, so do it only if we are using this pluggin
     if (typeof in_slider_plugin !== 'undefined') {
       if (in_slider_plugin){
@@ -215,8 +217,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
         }
       }
     }
-
-  })
+  }
 
   console.log('Someone pressed the spacebar',     )
 
@@ -229,7 +230,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
     // update response when trial_duration is over (now that there is not continue button)
     if (trial.trial_duration !== null ) {
-    jsPsych.pluginAPI.setTimeout(function() {
+        jsPsych.pluginAPI.setTimeout(function() {
         response.response = display_element.querySelector('#jspsych-html-slider-response-response').value;
         in_slider_plugin = false;
         //console.log("in slider plugin dans end", in_slider_plugin)
@@ -251,7 +252,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
       // kill keyboard listeners
       jsPsych.pluginAPI.cancelAllKeyboardResponses();
-
+      document.removeEventListener('keyup',Imlistening)
 
       // save data
       var trialdata = {

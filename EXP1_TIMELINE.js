@@ -10,16 +10,6 @@ var Conf_slider = Object.assign({}, config.Conf_slider_template);
 Conf_slider.start = function() {
     return Math.floor(Math.random() * config.Conf_limits[1])
 };
-//Conf_slider.data = function(){
-//                    var d = common_data;
-//                    d.screen = "Conf_slider";
-//                    return d
-//                  }
-//Conf_slider.on_finish = function(data){
-//                          if (data.start == data.response){
-//                            config.too_late = true;
-//                          }
-//                        }
 
 
 // ----------------------------------------------------------------------------
@@ -56,7 +46,7 @@ var timelinenonchunks = {
 var mytimeline = []
 mytimeline.push(config.stim_block, timelinewords, config.stim_block, timelinechunks, config.stim_block, timelinenonchunks);
 
-if (config.test == true) {var mytimeline = []
+if (config.debug == true) {var mytimeline = []
 mytimeline.push(config.stim_block, timelinewords);
 }
 
