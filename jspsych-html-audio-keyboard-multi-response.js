@@ -73,6 +73,7 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
     }
 
     // add stimulus
+    console.log("trial.stimulus",trial.stimulus)
      new_html += trial.stimulus.toUpperCase() +'</div>';
 
 

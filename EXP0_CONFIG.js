@@ -111,8 +111,38 @@ config.list_chunk_shuf = jsPsych.randomization.shuffle(chunk_lists);
 var nonchunk_lists = listnonchunks;
 config.list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
 
-//console.log('thistaircase', thisstaircase)
-//console.log('try to select right key',rangei(48,90))
+// Convert the non chunk into number stimuli
+var thisstim;
+var thisletter;
+var number_list = [];
+for (thisstim = 0;thisstim < nonchunk_lists.length; thisstim++){ // Loop across
+  var thistring = []
+  for (thisletter = 0;thisletter < nonchunk_lists[thisstim].stimulus.length;thisletter++){
+    //console.log('thistring',thistring)
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "w"){
+      thistring.push("1")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "e"){
+      thistring.push("2")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "r"){
+      thistring.push("3")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "t"){
+      thistring.push("4")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "u"){
+      thistring.push("5")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "i"){
+      thistring.push("6")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "o"){
+      thistring.push("7")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "p"){
+      thistring.push("8")}
+    }
+    var element = {}
+    element.stimulus = thistring.join("");
+    element.data = "number";
+    number_list.push(element);
+};
+config.list_number_shuf = jsPsych.randomization.shuffle(number_list);
+
 
 var trial_word = {
     type: 'html-audio-keyboard-multi-response',
@@ -194,6 +224,11 @@ var Conf_slider_template = {
 
 }
 
+// Randomize the order of size of the slider
+Conf_slider_template.start = function() {
+    return Math.floor(Math.random() * config.Conf_limits[1])
+};
+
 config.Conf_slider_template = Conf_slider_template;
 
 
@@ -212,52 +247,22 @@ config.Conf_slider_template = Conf_slider_template;
 //to_do.experiment                    = false;
 //config.to_do                        = to_do;
 
-
 //---------------------------------------------------------------------- //
 // Structure ----------------------------------------------------------- //
 
-//config.nb_blocs = 1;
-//config.nb_perm_bloc = 1;
+config.nb_blockspercond = 3;
 
+// Randomize the order of the blocks
+var factors = {
+    stimlist: ['config.list_word_shuf','config.list_chunk_shuf', 'config.list_nonchunk_shuf','config.list_number_shuf']
+    //ms_delay: [100, 200]
+}
 
+config.perm_blockorder = jsPsych.randomization.factorial(factors, 1);
+console.log('lala',config.perm_blockorder[0].stimlist)
 
 //---------------------------------------------------------------------- //
 // Conditions and randomization ---------------------------------------- //
-
-
-  //var colors = ["rgb(140,32,112)", "rgb(238,68,47)", "rgb(99,172,190)"];
-  //var colors = ["rgb(230, 159, 0)", "rgb(0,114,178)", "rgb(0,158,115)"];
-  //var colors = ["rgb(255,0,0)", "rgb(0,81,255)", "rgb(9,148,9)"] // ["red", "blue", "green"];
-
-  //var colors_names = ["mauve", "red-orange", "blue-green"];
-  //var colors_names = ["orange", "blue", "green"];
-////var colors_names = ["red", "blue", "green"];
-  //if (config.language == "francais"){
-  ////    colors_names = ['rouge', 'bleu', 'vert']
-  //}
-
-  //config.colors = colors;
-  //config.randomized_colors    = colors; // Not randomized anymore because there seems to be a spontaneous association (green for adheren red for oppose)
-  //config.instructionSettings  = {adhere: config.randomized_colors[2], oppose: config.randomized_colors[0], detach: config.randomized_colors[1]};
-  //config.orientationSettings  = {right: 0, left: 180}
-  //config.responseSettings     = {right: 39, left: 37} // s and f  arrows now
-
-  //config.factors              = {border_color_post: Object.values(config.instructionSettings),
-                                  //  coherent_direction: Object.values(config.orientationSettings)};
-
-  //config.nb_trials            = jsPsych.randomization.factorial(config.factors, 1).length;
-
-
-//---------------------------------------------------------------------- //
-// Catch Trials -------------------------------------------------------- //
-//config.prop_catchup         = 0; //0.16; // ~1/6, dans le code matlab c'&eacute;tait 3 pour 18
-//config.coh_catchup          = 0.6;
-//config.cachup_random        = jsPsych.randomization.repeat([1, 2, 3], 2);
-//config.cachup_random.push(jsPsych.randomization.sampleWithoutReplacement([1, 2, 3], 1)[0]) // we need 7 values for 7 blocs
-
-
-
-
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//

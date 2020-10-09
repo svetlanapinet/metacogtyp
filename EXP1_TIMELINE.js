@@ -4,51 +4,31 @@
 config = EXP0_CONFIG();
 
 
-// -----------------------------------------------------------------------------------------------//
-// Conf Slider ---------------------------------------------------------------
 var Conf_slider = Object.assign({}, config.Conf_slider_template);
-Conf_slider.start = function() {
-    return Math.floor(Math.random() * config.Conf_limits[1])
-};
 
 
 // ----------------------------------------------------------------------------
-// TRIALS WORD ---------------------------------------------------------------
-var timelinewords = {
-    timeline: [config.stim_trial_word,Conf_slider,config.stim_pause], //Conf_slider,
-    timeline_variables:config.list_word_shuf
-  }
+// CREATE BASIC TIMELINE ------------------------------------------------------
 
-// ----------------------------------------------------------------------------
-// TRIALS CHUNKS -------------------------------------------------------------
-var timelinechunks = {
-    timeline: [config.stim_trial_word,Conf_slider,config.stim_pause],
-    timeline_variables:config.list_chunk_shuf
-  }
-
-// ----------------------------------------------------------------------------
-// TRIALS NON-CHUNKS ---------------------------------------------------------
-var timelinenonchunks = {
-    timeline: [config.stim_trial_word,Conf_slider,config.stim_pause],
-    timeline_variables:config.list_nonchunk_shuf
-  }
-
-  // ----------------------------------------------------------------------------
-  // TRIALS NUMBERS  ---------------------------------------------------------
-  var timelinenonchunks = {
-      timeline: [config.stim_trial_word,config.Conf_slider_template,config.stim_pause,],
-      timeline_variables:config.list_nonchunk_shuf
-    }
-
-
-  // ---------------------------------------------------------------------------
-  // BLOCKS --------------------------------------------------------------------
 var mytimeline = []
-mytimeline.push(config.stim_block, timelinewords, config.stim_block, timelinechunks, config.stim_block, timelinenonchunks);
+for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // Loop across conditions (Word,  chunks, non-chunk, numbers)
 
-if (config.debug == true) {var mytimeline = []
-mytimeline.push(config.stim_block, timelinewords);
-}
+    // Reinitialize the STAIRCASE
+    config = EXP0_CONFIG();
+
+    // Create time line for a trial with stim + confidence + little break
+    timelineTrials = {
+      timeline: [config.stim_trial_word,Conf_slider,config.stim_pause], //Conf_slider,
+      timeline_variables: eval(config.perm_blockorder[thiscond].stimlist)}
+
+    // Replicate according to the number of block you want for each condition
+    for (var thisblockrepet = 0; thisblockrepet < config.nb_blockspercond; thisblockrepet++){
+          mytimeline.push(config.stim_block, timelineTrials);
+      }
+  }
+console.log("mytimeline",mytimeline)
+
+
 
 // *****************************************************************************
 // -----------------------------------------------------------------------------
