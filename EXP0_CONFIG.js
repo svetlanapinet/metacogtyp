@@ -66,7 +66,7 @@ config.len_conf               = 600000; //3000; MAX DURATION OF THE CONFIDENCE
 config.len_fixation           = 900;//900;
 config.len_respmapremind      = 2000;
 config.len_word               = 3000;
-
+config.len_TimePressureScreen  = 3000;
 //---------------------------------------------------------------------- //
 // Block onset  ----------------------------------------------------------- //
 var block = {
@@ -101,21 +101,26 @@ config.stim_pause = pause;
 //---------------------------------------------------------------------- //
 // Words  ----------------------------------------------------------- //
 
+// Select all the words
 var word_lists = listwords;
-if (config.debug == true) {word_lists = listtest;}
+//if (config.debug == true) {word_lists = listtest;}
 config.list_word_shuf = jsPsych.randomization.shuffle(word_lists);
+config.ntrialperblock =  word_lists.length
 
+// then select the number of corresponding stim in the chunk list
 var chunk_lists = listchunks;
 config.list_chunk_shuf = jsPsych.randomization.shuffle(chunk_lists);
+config.list_chunk_shuf = config.list_chunk_shuf.slice(1, config.ntrialperblock );
 
 var nonchunk_lists = listnonchunks;
 config.list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
+config.list_nonchunk_shuf = config.list_nonchunk_shuf.slice(1, config.ntrialperblock );
 
 // Convert the non chunk into number stimuli
 var thisstim;
 var thisletter;
 var number_list = [];
-for (thisstim = 0;thisstim < nonchunk_lists.length; thisstim++){ // Loop across
+for (thisstim = 0;thisstim < config.ntrialperblock; thisstim++){ // Loop across
   var thistring = []
   for (thisletter = 0;thisletter < nonchunk_lists[thisstim].stimulus.length;thisletter++){
     //console.log('thistring',thistring)
@@ -128,13 +133,13 @@ for (thisstim = 0;thisstim < nonchunk_lists.length; thisstim++){ // Loop across
     if (nonchunk_lists[thisstim].stimulus[thisletter] == "t"){
       thistring.push("4")}
     if (nonchunk_lists[thisstim].stimulus[thisletter] == "u"){
-      thistring.push("5")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "i"){
-      thistring.push("6")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "o"){
       thistring.push("7")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "p"){
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "i"){
       thistring.push("8")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "o"){
+      thistring.push("9")}
+    if (nonchunk_lists[thisstim].stimulus[thisletter] == "p"){
+      thistring.push("0")}
     }
     var element = {}
     element.stimulus = thistring.join("");
@@ -156,21 +161,25 @@ var trial_word = {
     on_finish: function(data){
 
          console.log('ACC', data.acc)
-         console.log('SCval', thisstaircase.SCval)
+         console.log('Stairecase Val', thisstaircase.SCval)
 
          thisstaircase.nTrials += 1;
 
          // get the data of the previous rdk stim
          //var rdk_data = jsPsych.data.get().last(2).values()[0];
          var right_answer = data.acc;
-         console.log("bonne rep ?", right_answer)
+         //console.log("bonne rep ?", right_answer)
          data.CorrectPerceptual = data.acc;
          thisstaircase.nTrialSC += 1;
          thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(!!right_answer);
          thisstaircase = expAK_staircase_function(thisstaircase);
          //data.dir_stair = thisstaircase.dir[1];
-
-  }}
+         toofewletterstyped = false;
+         if (data.toofewletterstyped > 0 ){
+           toofewletterstyped = true;}
+        return toofewletterstyped
+        }
+  }
 
 
 
@@ -193,7 +202,7 @@ config.Conf_size               = function(){
                                     return longueur
                                 }//width/2;
 config.Conf_stim               = ''; //"How much did you feel in control ?";
-config.Conf_choices            = [70, 74]; // F and J
+config.Conf_choices            = ["ShiftLeft","ShiftRight"]; // F and J
 config.Conf_speed              = 300; // how often the slider position is updated (in ms)
 config.Conf_step               = 1;
 
@@ -212,7 +221,7 @@ var Conf_slider_template = {
     stimulus: config.Conf_stim,
     slider_width: config.Conf_size,
     prompt : function(){
-        var txt = "<br></br>Use the keys [ F ] and [ J ]  to move the slider";
+        var txt = "<br></br>Use the keys [ Shift Left ] and [ Shift Right ]  to move the slider";
         return txt
     },
     min: config.Conf_limits[0],
@@ -230,6 +239,32 @@ Conf_slider_template.start = function() {
 };
 
 config.Conf_slider_template = Conf_slider_template;
+
+//---------------------------------------------------------------------- //
+// Too slow screen  ---------------------------------------------------------- //
+var Feedback_TimePressure_screen = {
+    type: 'html-keyboard-response',
+    stimulus: 'You have not typed all the letters. \n\n Respond faster !! ',
+    choices:jsPsych.NO_KEYS,
+    trial_duration: config.len_TimePressureScreen,
+    //data: function(){
+    //    var d = common_data;
+    //    d.screen = "time_pressureScreen";
+    //    d.toofewletterstyped = 1;
+    //    return d
+    //},
+    //on_finish: function(data){
+
+      //var last_screen = jsPsych.data.get().last(2).values()[0].screen;
+      // If too late on the first screen
+      //if (last_screen == "get_response"){ // if they were too late for the choice, ie at the begining of the trial
+          //config.nb_too_late_in_a_row += 1;
+      //}else if ((last_screen == "FoC_slider")){ // if they were too late for the confidence, ie they are still doing the task
+      //    config.nb_too_late_in_a_row = 0;
+      //}
+      //} // end on_finish
+}
+config.Feedback_TimePressure_screen = Feedback_TimePressure_screen;
 
 
 
@@ -259,7 +294,7 @@ var factors = {
 }
 
 config.perm_blockorder = jsPsych.randomization.factorial(factors, 1);
-console.log('lala',config.perm_blockorder[0].stimlist)
+//console.log('lala',config.perm_blockorder[0].stimlist)
 
 //---------------------------------------------------------------------- //
 // Conditions and randomization ---------------------------------------- //

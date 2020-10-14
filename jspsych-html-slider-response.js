@@ -167,14 +167,15 @@ jsPsych.plugins['html-slider-response'] = (function() {
           if (!arrow_pressed){
             arrow_pressed = true;
 
-            if ( !relevant_keys.includes(e.keyCode)){
+            if ( !relevant_keys.includes(e.code)){
               return false
             }
 
             var move_slider = setInterval(function(){
 
                 if(in_slider_plugin){
-                  var k = e.keyCode; // ou keypour utiliser les lettres
+                  //console.log('e.code',e.code)
+                  var k = e.code; // ou keypour utiliser les lettres
                   var old_value = parseInt(display_element.querySelector('#jspsych-html-slider-response-response').value, 10);
                   var step = trial.step;
 
@@ -208,7 +209,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
     if (typeof in_slider_plugin !== 'undefined') {
       if (in_slider_plugin){
         var k = e.keyCode;
-        console.log('in keyup', k)
+        //console.log('in keyup', k)
           arrow_pressed = false;
           if(k == trial.response_ends_trial){
             spacebarpressed = true;
@@ -219,7 +220,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
     }
   }
 
-  console.log('Someone pressed the spacebar',     )
+  //console.log('Someone pressed the spacebar',     )
 
 
     // End the trial if the spacebar button is arrow_pressed

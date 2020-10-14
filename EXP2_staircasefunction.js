@@ -72,7 +72,7 @@ function expAK_staircase_function(thisstaircase){
       // If min stepsize is not reached, reduce stepsize
       if (thisstaircase.variableStepSize){
             if (thisstaircase.StepSize > thisstaircase.min_step_size){
-                  console.log("comp", thisstaircase.r, thisstaircase.nRunHalve)
+                  //console.log("comp", thisstaircase.r, thisstaircase.nRunHalve)
                   if (thisstaircase.r == thisstaircase.nRunHalve){
                         thisstaircase.StepSize  = thisstaircase.StepSize/2;
                         thisstaircase.nRunHalve = thisstaircase.nRunHalve*2;
@@ -82,7 +82,7 @@ function expAK_staircase_function(thisstaircase){
 
             }
       }
-      console.log("stepsize", thisstaircase.StepSize)
+      //console.log("stepsize", thisstaircase.StepSize)
 
 
 

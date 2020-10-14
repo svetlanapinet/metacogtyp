@@ -91,7 +91,8 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
     var response = {
       rt: [],
       key: [],
-      char: []
+      char: [],
+      acc: []
     };
 
     // feedback element
@@ -113,13 +114,23 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
         jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
       }
 
+      // calculate response accuracy
+      //finalResp = text.value + jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
+      //accuracy = finalResp == trial.stimulus;
+      response.accuracy = trial.stimulus.toUpperCase() == response.char.join("");
+      numberwongletterstyped = trial.stimulus.length - response.char.length;
+
+
       // gather the data to store for the trial
       var trial_data = {
         "rt": response.rt,
         "stimulus": trial.stimulus,
         "key_press": response.key,
-        "key_name": response.char
+        "key_name": response.char,
+        "acc": response.accuracy,
+        "toofewletterstyped": numberwongletterstyped
       };
+      console.log('numberwongletterstyped',numberwongletterstyped)
 
       // clear the display
       display_element.innerHTML = '';
@@ -141,6 +152,9 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
         end_trial();
       }
 
+      //.log('response',response)
+      //console.log('info',info)
+
       // only record the first response
       if (response.key == null) {
         response = info;
@@ -151,6 +165,7 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
       response.key.push(info.key);
       response.rt.push(info.rt);
       response.char.push(String.fromCharCode(info.key));
+
 //     display_element.innerHTML += String.fromCharCode(info.key).toUpperCase();
 //     display_element.style.fontFamily =  'text-security-disc';
 
