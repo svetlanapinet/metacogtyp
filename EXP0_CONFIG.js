@@ -309,7 +309,61 @@ config.perm_blockorder = jsPsych.randomization.factorial(factors, 1);
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
 
+var instructions_block1 = {
+    type: "html-keyboard-response",
+    stimulus:"<h2>Preparing for the experiment</h2>"+
+        "<div align='left'><p>This experiment involves typing words. You will not be able to type the words accurately if you are in a noisy or distracting environment.</p>"+
+        "<p>Please take a moment to do the following before you continue:</p>"+
+        "<ul><li>Mute, turn off, or move away from any sources of noise or distraction.</li>"+
+            "<li>Make sure you are sitting comfortably, in a good typing position before you begin.</li>"+
+            "<li>[...anything else?].</li></ul></div>",
+    prompt: "<p>Press the SPACE key to continue.</p>",
+    timing_post_trial: 1000,
+    choices: [' '],
+};
 
+var instructions_block2 = {
+    type: "html-keyboard-response",
+    stimulus:"<h2>Typing words</h2>"+
+        "<div align='left'><p>In this experiment, you will see some words on the screen and type them as quickly as you can.</p>"+
+        "<p>You should start typing whenever you see the word. What you type will be masked as if you were typing a password. There will not be very much time to type the word, so you will need to type as quickly as you can.</p></div>",
+    prompt: "<p>Press the SPACE key to continue.</p>",
+    timing_post_trial: 1000,
+    choices: [' '],
+};
+
+var instructions_block3 = {
+    type: "html-keyboard-response",
+    stimulus:"<h2>Pretest</h2>"+
+        "<div align='left'><p>For this experiment, we are looking for participants with a certain level of spelling and typing proficiency. You will need to meet certain criteria in the practice trials to be able to continue.</p>"+
+        "<p>Your typing proficiency will be assessed in a typing test. First, you will be asked to copy a text <strong>without</strong> strict time limits. Then, you will be asked to copy 15 words <strong>within</strong> time limits. You will need to finish typing before the deadline.</p></div>",
+    prompt: "<p>Press the SPACE key to continue.</p>",
+    timing_post_trial: 1000,
+    choices: [' '],
+};
+
+var instructions_block4 = {
+    type: "html-keyboard-response",
+    stimulus:"<h2>Ready?</h2>"+
+        "<div align='left'><p>Some final notes before you begin:</p>"+
+        "<ul><li>The stimulus in each trial can be a single English word, a sequence of 4 letters, a sequence of 4 numbers.</li>"+
+        "<li>You <strong>don't</strong> need to press any specific key after each word, it will automatically move on to the next trial.</li>"+
+        "<li>You <strong>don't</strong> need to use the SHIFT key.</li>"+
+        "<li>Try to type the words as fast and as accurately as you can.</li>"+
+        "<li>Do not try to correct yourself, it's okay if you make mistakes, but remember to finish typing before the deadline.</li>"+
+        "<li>It is <strong>very</strong> important that you type 4 keystrokes on each trial.</li>"+
+        "<li>There is no way to pause the session. However, there will be regular breaks during the session.</li></ul>"+
+        "<p>You may now start the session.</p>"+
+        "<p><strong>Do not close or reload the page after this point!</strong> If you close or reload the page before the session is complete, you will not be able to continue.</p></div>",
+    prompt: "<p>Press the SPACE key to begin.</p>",
+    timing_post_trial: 1000,
+    choices: [' '],
+};
+
+timeline_instruct = [instructions_block1, instructions_block2, instructions_block3, instructions_block4];
+
+
+config.instructions = timeline_instruct;
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//

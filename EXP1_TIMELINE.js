@@ -16,6 +16,9 @@ var too_slow_response = {
 // CREATE BASIC TIMELINE ------------------------------------------------------
 
 var mytimeline = []
+
+mytimeline = mytimeline.concat(config.instructions); // ici il faut utiliser concat plutôt que push... c'est comme ça, sinon ça marche pas!
+
 for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // Loop across conditions (Word,  chunks, non-chunk, numbers)
 
     // Reinitialize the STAIRCASE
@@ -59,8 +62,10 @@ if (config.debug == true){
     timeline: [config.stim_trial_word, config.stim_pause],
     timeline_variables: config.list_word_shuf
   }
-  mytimeline = [];
+  var mytimeline = [];
+  mytimeline = mytimeline.concat(config.instructions);
   mytimeline.push(shorttimeline);
+  console.log(mytimeline);
 }
 
 //console.log("mytimeline",mytimeline)
