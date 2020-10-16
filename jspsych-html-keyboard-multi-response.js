@@ -60,6 +60,12 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 //        default: false,
 //        description: 'If true, then the trial will end as soon as the audio file finishes playing.'
 //      },
+     progressbar: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'A progress bar is displayed above the stimulus',
+        default: false,
+        description: 'If true, then a progress bar is displayed above the stimulus'
+      },
       timing_response: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Time allowed for the response',
@@ -88,8 +94,23 @@ jsPsych.plugins["html-keyboard-multi-response"] = (function() {
 //    display_element.append('');
       display_element.innerHTML = '';
 
-      var new_html = '<div id="jspsych-html-keyboard-multi-response-stimulus" style="margin-bottom: 1em">'+trial.stimulus+'</div>';
+//      var new_html = '<div id="jspsych-html-keyboard-multi-response-stimulus" style="margin-bottom: 1em">'+trial.stimulus+'</div>';
 //        var new_html = trial.stimulus;
+  var new_html = '<div id="jspsych-html-keyboard-multiple-response-stimulus">';
+
+// add progress bar
+if (trial.progressbar){
+  new_html += '<div style="width: 600px; height: 20px; background-color: #ccc;">' +
+  '<div style="width: 0%; height: 20px; background-color: #333; animation-name: progress-bar; animation-duration: ' +
+  trial.timing_response/1000 + 's;animation-timing-function: linear;">' +
+  '</div>' +
+  '<style> @keyframes progress-bar { 0% { width:0%;} 100% { width:100%} } </style>' +
+  '</div>';
+}
+
+    // add stimulus
+      new_html += '<p>'+trial.stimulus +'</p></div>';
+
 
     // add prompt
       if(trial.prompt !== null){

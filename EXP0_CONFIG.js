@@ -398,6 +398,7 @@ var trial_typtest2 = {
     timing_response: 2000,
     visual_feedback: 'word',
     post_trial_gap: 200,
+    progressbar: true,
     data: {phase: 'typtest2'},
     on_finish: function(data) {
         data.correct = data.stimulus == data.final.toLowerCase();
@@ -449,7 +450,8 @@ var timeline_typtest2 = {
     timeline_variables: wordstest2,
   }
 
-  config.typtest = [timeline_typtest, timeline_typtest2, debrief_block2, debrief_block3];
+//  config.typtest = [timeline_typtest, timeline_typtest2, debrief_block2, debrief_block3];
+  config.typtest = [timeline_typtest2, debrief_block2, debrief_block3];
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
