@@ -73,8 +73,8 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
     }
 
     // add stimulus
-    console.log("trial.stimulus",trial.stimulus)
-     new_html += trial.stimulus.toUpperCase() +'</div>';
+    console.log("trial.stimulus",trial.stimulus);
+     new_html += '</p> '+ trial.stimulus.toUpperCase() +'</p></div>';
 
 
     // add prompt

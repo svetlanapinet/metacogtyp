@@ -13,7 +13,7 @@ function EXP0_CONFIG(){
 //----------------------------------------------------------------------------------------//
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-config.debug = true; // Shorter stimulus sequence
+config.debug = false; // Shorter stimulus sequence
 
 
   //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -450,8 +450,8 @@ var timeline_typtest2 = {
     timeline_variables: wordstest2,
   }
 
-//  config.typtest = [timeline_typtest, timeline_typtest2, debrief_block2, debrief_block3];
-  config.typtest = [timeline_typtest2, debrief_block2, debrief_block3];
+  config.typtest = [timeline_typtest, timeline_typtest2, debrief_block2, debrief_block3];
+//  config.typtest = [timeline_typtest2, debrief_block2, debrief_block3];
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//

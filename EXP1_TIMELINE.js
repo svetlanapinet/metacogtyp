@@ -17,7 +17,11 @@ var too_slow_response = {
 
 var mytimeline = []
 
-mytimeline = mytimeline.concat(config.instructions); // ici il faut utiliser concat plutôt que push... c'est comme ça, sinon ça marche pas!
+// uncomment to add instructions
+//mytimeline = mytimeline.concat(config.instructions); // ici il faut utiliser concat plutôt que push... c'est comme ça, sinon ça marche pas!
+
+// uncomment to add typing test
+//mytimeline = mytimeline.concat(config.typtest);
 
 for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // Loop across conditions (Word,  chunks, non-chunk, numbers)
 
@@ -57,6 +61,8 @@ for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // 
   }
 //console.log("mytimeline",mytimeline)
 
+
+// short version for debugging purposes
 if (config.debug == true){
   var shorttimeline = {
     timeline: [config.stim_trial_word, config.stim_pause],
