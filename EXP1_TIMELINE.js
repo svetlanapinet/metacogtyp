@@ -54,7 +54,17 @@ for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // 
   }
 //console.log("mytimeline",mytimeline)
 
+if (config.debug == true){
+  var shorttimeline = {
+    timeline: [config.stim_trial_word, config.stim_pause],
+    timeline_variables: config.list_word_shuf
+  }
+  mytimeline = [];
+  mytimeline.push(shorttimeline);
+}
 
+//console.log("mytimeline",mytimeline)
+//console.log(config.list_word_shuf)
 
 // *****************************************************************************
 // -----------------------------------------------------------------------------
@@ -62,7 +72,11 @@ for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // 
 jsPsych.init({
 	timeline: mytimeline,
   on_finish:
-//  jspsychr.save_locally,
   function() {
-    jsPsych.data.displayData('json');}
+    jsPsych.data.displayData('json');
+  //var all_data = jsPsych.data.get().csv();
+    var all_data = jsPsych.data.get().json();
+    var outputname = "data" + config.randomIntFromInterval(1,999);
+    config.saveData(all_data, outputname);
+  },
 });

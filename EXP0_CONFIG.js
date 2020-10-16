@@ -103,7 +103,7 @@ config.stim_pause = pause;
 
 // Select all the words
 var word_lists = listwords;
-//if (config.debug == true) {word_lists = listtest;}
+if (config.debug == true) {word_lists = listtest;}
 config.list_word_shuf = jsPsych.randomization.shuffle(word_lists);
 config.ntrialperblock =  word_lists.length
 
@@ -286,6 +286,8 @@ config.Feedback_TimePressure_screen = Feedback_TimePressure_screen;
 // Structure ----------------------------------------------------------- //
 
 config.nb_blockspercond = 3;
+if (config.debug == true){config.nb_blockspercond = 1;}
+
 
 // Randomize the order of the blocks
 var factors = {
@@ -345,6 +347,21 @@ function rangei(start,end){
     // list.push(i);
     // return list
 }
+
+
+// SAVE DATA
+
+function downloadObjectAsJson(exportObj, exportName){
+  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+  var downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute("href",     dataStr);
+  downloadAnchorNode.setAttribute("download", exportName + ".json");
+  document.body.appendChild(downloadAnchorNode); // required for firefox
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
+}
+
+config.saveData = downloadObjectAsJson;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
