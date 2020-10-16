@@ -63,7 +63,8 @@ if (config.debug == true){
     timeline_variables: config.list_word_shuf
   }
   var mytimeline = [];
-  mytimeline = mytimeline.concat(config.instructions);
+  //mytimeline = mytimeline.concat(config.instructions);
+  mytimeline = mytimeline.concat(config.typtest);
   mytimeline.push(shorttimeline);
   console.log(mytimeline);
 }

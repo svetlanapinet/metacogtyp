@@ -365,6 +365,92 @@ timeline_instruct = [instructions_block1, instructions_block2, instructions_bloc
 
 config.instructions = timeline_instruct;
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+//----------------------------------------------------------------------------------------//
+//                                    Typing Test                                        //
+//----------------------------------------------------------------------------------------//
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+
+
+var trial_typtest1 = {
+    type: 'html-keyboard-multi-response',
+    stimulus:jsPsych.timelineVariable('stimulus'),
+//    trial_duration: thisstaircase.SCval,
+    prompt: "<p><i>Press ENTER to continue.</i></p>",
+    visual_feedback: 'word',
+    key_terminator: 13,
+    data: {phase: 'copytext'},
+  }
+
+var timeline_typtest = {
+  timeline: [trial_typtest1],
+  timeline_variables: copytexts,
+}
+
+// Add debrief trial here as well to compute typing speed (at least) on texts
+//config.typtest = timeline_typtest;
+
+
+var trial_typtest2 = {
+    type: 'html-keyboard-multi-response',
+    stimulus:jsPsych.timelineVariable('stimulus'),
+    trial_duration: 2500,
+    timing_response: 2000,
+    visual_feedback: 'word',
+    post_trial_gap: 200,
+    data: {phase: 'typtest2'},
+    on_finish: function(data) {
+        data.correct = data.stimulus == data.final.toLowerCase();
+        var dead = trial_typtest2.timing_response;
+        console.log(dead)
+        console.log(data.rtlast)
+        if (data.rtlast <= dead) {
+        data.over = false} else {data.over = true}},
+//    key_terminator: 13,
+  }
+
+
+  var debrief_block2 = {
+    type: "html-keyboard-response",
+    stimulus: '', //eventually something transparent
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 100,
+    data: {phase: 'typtest2_res'},
+    on_finish: function(data) {
+
+      var trials_train2 = jsPsych.data.get().filter({phase: 'typtest2'});
+      var correct_train2 = trials_train2.filter({correct: true});
+      var accuracy = Math.round(correct_train2.count() / trials_train2.count() * 100);
+      var under_train2 = trials_train2.filter({over: false});
+      var under = Math.round(under_train2.count() / trials_train2.count() * 100);
+      data.accuracy = accuracy;
+      data.under = under;
+      console.log(accuracy);
+    },
+  };
+
+  // a trial that will eventually be very short and transparent to get out of the experiment if need be
+  var debrief_block3 = {
+    type: "html-keyboard-response",
+    stimulus: '', //eventually something transparent
+    trial_duration: 100,
+    on_finish: function() {
+      var train2_res = jsPsych.data.get().filter({phase: 'typtest2_res'});
+      var train2_acc = train2_res.values()[0];
+      if(train2_acc.accuracy >= 50 && train2_acc.under >= 80){
+  	     console.log('show must go on!'); // go on
+        } else {
+      	console.log('you would be out if this was the real experiment')
+//          endExperimentEarly(); //  something to get participants out
+      }},};
+
+var timeline_typtest2 = {
+    timeline: [trial_typtest2],
+    timeline_variables: wordstest2,
+  }
+
+  config.typtest = [timeline_typtest, timeline_typtest2, debrief_block2, debrief_block3];
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //----------------------------------------------------------------------------------------//
