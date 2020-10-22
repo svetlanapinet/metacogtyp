@@ -112,6 +112,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
     }
   }
 
+  //clearEvents()
   plugin.trial = function(display_element, trial) {
 
     var html = '<div id="jspsych-html-slider-response-wrapper" style="margin: 100px 0px;">';
@@ -159,7 +160,9 @@ jsPsych.plugins['html-slider-response'] = (function() {
       var relevant_keys = [trial.key_to_end, trial.choices[0], trial.choices[1]];
 
 
-    document.addEventListener('keydown', function(e){ //keydown
+    document.addEventListener('keydown',Imlistening2)
+
+    function Imlistening2(e){ //keydown
 
       // "document" is global, so do it only if we are using this pluggin
       if (typeof in_slider_plugin !== 'undefined') {
@@ -199,7 +202,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
       } // end if in_slider_plugin is defined
 
       }
-  })
+  }
   //console.log('button end trial',trial.response_ends_trial)
 
   document.addEventListener('keyup',Imlistening)
@@ -209,7 +212,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
     if (typeof in_slider_plugin !== 'undefined') {
       if (in_slider_plugin){
         var k = e.keyCode;
-        //console.log('in keyup', k)
+        console.log('in keyup', k)
           arrow_pressed = false;
           if(k == trial.response_ends_trial){
             spacebarpressed = true;
@@ -254,6 +257,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
       // kill keyboard listeners
       jsPsych.pluginAPI.cancelAllKeyboardResponses();
       document.removeEventListener('keyup',Imlistening)
+      document.removeEventListener('keydown',Imlistening2)
 
       // save data
       var trialdata = {
