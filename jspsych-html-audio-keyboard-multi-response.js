@@ -130,7 +130,7 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
         "acc": response.accuracy,
         "toofewletterstyped": numberwongletterstyped
       };
-      console.log('numberwongletterstyped',numberwongletterstyped)
+      console.log('response.char',response.char)
 
       // clear the display
       display_element.innerHTML = '';

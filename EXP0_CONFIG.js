@@ -1,4 +1,4 @@
-function EXP0_CONFIG(){
+function EXP0_CONFIG(thiscondition){
   // the place to change parameters
 
   var jsPsych = window['jsPsych'];
@@ -14,6 +14,8 @@ function EXP0_CONFIG(){
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
 config.debug = false; // Shorter stimulus sequence
+config.do_typingtest = true; // Shorter stimulus sequence
+config.do_instrmaintask = true; // Shorter stimulus sequence
 
 
   //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -27,13 +29,14 @@ config.debug = false; // Shorter stimulus sequence
   //---------------------------------------------------------------------- //
   // Parameters that can be changed -------------------------------------- //
 
-  thisstaircase.StepSize                  = 100;
-  thisstaircase.SCval                     = 2000;
+  thisstaircase.StepSize                  = 250;
+  thisstaircase.SCvalstartppoint          = [1800,2000,2500,3000];
+  thisstaircase.SCval                     = thisstaircase.SCvalstartppoint[thiscondition];
   thisstaircase.min_step_size             = 16;
   thisstaircase.numTrials                 = 150;// nb max
   thisstaircase.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
   thisstaircase.thresholdTrialN           = 40;
-  thisstaircase.nRunHalve                 = 2; // after how many reversals should we reduce stepsize ?
+  thisstaircase.nRunHalve                 = 20; // after how many reversals should we reduce stepsize ?
 
   //---------------------------------------------------------------------- //
   // Initialisations ----------------------------------------------------- //
@@ -52,8 +55,6 @@ config.debug = false; // Shorter stimulus sequence
   config.stair                    = thisstaircase;
 
 
-
-
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //----------------------------------------------------------------------------------------//
 //                                    STIMULI                                             //
@@ -69,12 +70,40 @@ config.len_word               = 3000;
 config.len_TimePressureScreen  = 3000;
 //---------------------------------------------------------------------- //
 // Block onset  ----------------------------------------------------------- //
-var block = {
+
+var wordblock = {
     type: 'html-keyboard-response',
-    stimulus: '<p>Begin a new block</p>'+
-	'<p>Press any key </p>',
+    prompt: "<p>Press the SPACE BAR to start.</p>",
+    stimulus: '<p>This is a <b>word</b> block !</p>'+
+              '<p>It should last 2 minutes.</p>',
 };
-config.stim_block = block;
+
+var chunkblock = {
+    type: 'html-keyboard-response',
+    prompt: "<p>Press the SPACE BAR to start.</p>",
+    stimulus: '<p>This is a <b>random letter sequence</b> block !</p>'+
+              '<p>It should last 2 minutes.</p>',
+};
+
+var nonchunkblock = {
+    type: 'html-keyboard-response',
+    prompt: "<p>Press the SPACE BAR to start.</p>",
+    stimulus: '<p>This is a <b>random letter sequence</b> block !</p>'+
+              '<p>It should last 2 minutes.</p>',
+};
+
+var numberblock = {
+    type: 'html-keyboard-response',
+    prompt: "<p>Press the SPACE BAR to start.</p>",
+    stimulus: '<p>This is a <b>number sequence</b> block !</p>'+
+              '<p>It should last 2 minutes.</p>',
+};
+var instr_block = [];
+instr_block.push(wordblock);
+instr_block.push(chunkblock);//chunkblock,nonchunkblock,numberblock};
+instr_block.push(nonchunkblock);
+instr_block.push(numberblock);
+config.instr_block = instr_block;
 
 //---------------------------------------------------------------------- //
 // Response Mapping Reminder   ----------------------------------------- //
@@ -133,13 +162,13 @@ for (thisstim = 0;thisstim < config.ntrialperblock; thisstim++){ // Loop across
     if (nonchunk_lists[thisstim].stimulus[thisletter] == "t"){
       thistring.push("4")}
     if (nonchunk_lists[thisstim].stimulus[thisletter] == "u"){
-      thistring.push("7")}
+      thistring.push("6")}
     if (nonchunk_lists[thisstim].stimulus[thisletter] == "i"){
-      thistring.push("8")}
+      thistring.push("7")}
     if (nonchunk_lists[thisstim].stimulus[thisletter] == "o"){
-      thistring.push("9")}
+      thistring.push("8")}
     if (nonchunk_lists[thisstim].stimulus[thisletter] == "p"){
-      thistring.push("0")}
+      thistring.push("9")}
     }
     var element = {}
     element.stimulus = thistring.join("");
@@ -177,21 +206,30 @@ var trial_word = {
          toofewletterstyped = false;
          if (data.toofewletterstyped > 0 ){
            toofewletterstyped = true;}
-        return toofewletterstyped
+           toomanyletterstyped = false;
+         if (data.toofewletterstyped < 0 ){
+             toomanyletterstyped = true;}
+        return [toofewletterstyped,toomanyletterstyped]
         }
   }
 
 
 
 config.stim_trial_word = trial_word;
+var thisstimlist = [];
+thisstimlist.push(config.list_word_shuf);
+thisstimlist.push(config.list_chunk_shuf);
+thisstimlist.push(config.list_nonchunk_shuf);
+thisstimlist.push(config.list_number_shuf);
 
+config.stimlist = thisstimlist;
 
 
 //---------------------------------------------------------------------- //
 // Confidence  ---------------------------------------------------------- //
 
-config.Conf_labels             = ["<font size=4> Sure Correct </font>",
-                                 "<font size=4> Sure Error </font>"]
+config.Conf_labels             = ["<font size=6> Sure Correct </font>",
+                                 "<font size=6> Sure Error </font>"]
 config.Conf_limits             = [0, 4];
 config.Conf_size               = function(){
                                     var longueur = config.diameter*3;
@@ -203,16 +241,16 @@ config.Conf_size               = function(){
                                 }//width/2;
 config.Conf_stim               = ''; //"How much did you feel in control ?";
 config.Conf_choices            = ["ShiftLeft","ShiftRight"]; // F and J
-config.Conf_speed              = 300; // how often the slider position is updated (in ms)
+config.Conf_speed              = 200; // how often the slider position is updated (in ms)
 config.Conf_step               = 1;
 
 // randomize Conf labels positions
-config.rand_order              = jsPsych.randomization.sampleWithReplacement([0, 1], 1)[0];
-if (config.rand_order == 1){
-    var temp = config.Conf_labels[0];
-    config.Conf_labels[0] = config.Conf_labels[1];
-    config.Conf_labels[1] = temp;
-}
+//config.rand_order              = jsPsych.randomization.sampleWithReplacement([0, 1], 1)[0];
+//if (config.rand_order == 1){
+//    var temp = config.Conf_labels[0];
+//    config.Conf_labels[0] = config.Conf_labels[1];
+//    config.Conf_labels[1] = temp;
+//}
 
 // Conf slider template
 var Conf_slider_template = {
@@ -221,7 +259,8 @@ var Conf_slider_template = {
     stimulus: config.Conf_stim,
     slider_width: config.Conf_size,
     prompt : function(){
-        var txt = "<br></br>Use the keys [ Shift Left ] and [ Shift Right ]  to move the slider";
+        var txt = "<br></br>Use <b>[LEFT SHIFT]</b> and <b>[RIGHT SHIFT]</b> to move the slider."+
+                  "<p>Press the <b>SPACE BAR</b> to continue.</p>";
         return txt
     },
     min: config.Conf_limits[0],
@@ -244,27 +283,23 @@ config.Conf_slider_template = Conf_slider_template;
 // Too slow screen  ---------------------------------------------------------- //
 var Feedback_TimePressure_screen = {
     type: 'html-keyboard-response',
-    stimulus: 'You have not typed all the letters. \n\n Respond faster !! ',
+    stimulus: 'You have not pressed enough keys. \n\n Respond faster !! ',
     choices:jsPsych.NO_KEYS,
     trial_duration: config.len_TimePressureScreen,
-    //data: function(){
-    //    var d = common_data;
-    //    d.screen = "time_pressureScreen";
-    //    d.toofewletterstyped = 1;
-    //    return d
-    //},
-    //on_finish: function(data){
 
-      //var last_screen = jsPsych.data.get().last(2).values()[0].screen;
-      // If too late on the first screen
-      //if (last_screen == "get_response"){ // if they were too late for the choice, ie at the begining of the trial
-          //config.nb_too_late_in_a_row += 1;
-      //}else if ((last_screen == "FoC_slider")){ // if they were too late for the confidence, ie they are still doing the task
-      //    config.nb_too_late_in_a_row = 0;
-      //}
-      //} // end on_finish
 }
+
 config.Feedback_TimePressure_screen = Feedback_TimePressure_screen;
+
+
+var Feedback_TooManyLetters_screen = {
+    type: 'html-keyboard-response',
+    stimulus: 'You have pressed too many keys! ',
+    choices:jsPsych.NO_KEYS,
+    trial_duration: config.len_TimePressureScreen,
+
+}
+config.Feedback_TooManyLetters_screen = Feedback_TooManyLetters_screen;
 
 
 
@@ -274,24 +309,19 @@ config.Feedback_TimePressure_screen = Feedback_TimePressure_screen;
 //----------------------------------------------------------------------------------------//
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-//---------------------------------------------------------------------- //
-// What parts to do ---------------------------------------------------- //
-
-//var to_do = {};
-//to_do.staircase                     = false;
-//to_do.experiment                    = false;
-//config.to_do                        = to_do;
 
 //---------------------------------------------------------------------- //
 // Structure ----------------------------------------------------------- //
 
-config.nb_blockspercond = 3;
+config.nb_blockspercond = 1;
 if (config.debug == true){config.nb_blockspercond = 1;}
 
 
 // Randomize the order of the blocks
 var factors = {
-    stimlist: ['config.list_word_shuf','config.list_chunk_shuf', 'config.list_nonchunk_shuf','config.list_number_shuf']
+   stimlist: [0,1,2,3]
+
+//    stimlist: ['config.list_word_shuf','config.list_chunk_shuf', 'config.list_nonchunk_shuf','config.list_number_shuf']
     //ms_delay: [100, 200]
 }
 
@@ -309,61 +339,121 @@ config.perm_blockorder = jsPsych.randomization.factorial(factors, 1);
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
 
-var instructions_block1 = {
-    type: "html-keyboard-response",
-    stimulus:"<h2>Preparing for the experiment</h2>"+
-        "<div align='left'><p>This experiment involves typing words. You will not be able to type the words accurately if you are in a noisy or distracting environment.</p>"+
-        "<p>Please take a moment to do the following before you continue:</p>"+
-        "<ul><li>Mute, turn off, or move away from any sources of noise or distraction.</li>"+
-            "<li>Make sure you are sitting comfortably, in a good typing position before you begin.</li>"+
-            "<li>[...anything else?].</li></ul></div>",
-    prompt: "<p>Press the SPACE key to continue.</p>",
+
+// welcome !
+instr_welcome = {};
+instr_welcome.intro1 = {
+    type:  "html-keyboard-response",
+    prompt: "<p>Press the SPACE BAR to start.</p>",
     timing_post_trial: 1000,
     choices: [' '],
+    stimulus: "<p> <b>Thanks for participating in this experiment ! </b></p>" +
+    "<p>Do not close or reload the page after this point. </p></div>"
 };
 
-var instructions_block2 = {
-    type: "html-keyboard-response",
-    stimulus:"<h2>Typing words</h2>"+
-        "<div align='left'><p>In this experiment, you will see some words on the screen and type them as quickly as you can.</p>"+
-        "<p>You should start typing whenever you see the word. What you type will be masked as if you were typing a password. There will not be very much time to type the word, so you will need to type as quickly as you can.</p></div>",
-    prompt: "<p>Press the SPACE key to continue.</p>",
+instr_welcome.intro2 = {
+    type:  "html-keyboard-response",
+    prompt: "<p>Press the SPACE BAR to continue.</p>",
     timing_post_trial: 1000,
     choices: [' '],
-};
+    stimulus: "<h2>Preparing for the experiment</h2>"+
+        "<div align='left'> This experiment will last approximately <b>30 minutes</b>. </div>" +
+        "<p align='left'>It will involve <b>typing words</b>. You will not be able to type the words accurately if you are in a noisy or distracting environment.</p>"+
+        "<p align='left'>Please take a moment to do the following before you continue:</p>"+
+        "<div align='left'><ul><li><b>Mute</b>, <b>turn off</b>, or move away from any sources of noise or distraction.</li>"+
+        "<li>Make sure you are <b>sitting comfortably</b>, in a good typing position before you begin.</li> </div>"
+}
+config.instr_welcome = instr_welcome;
 
-var instructions_block3 = {
-    type: "html-keyboard-response",
-    stimulus:"<h2>Pretest</h2>"+
-        "<div align='left'><p>For this experiment, we are looking for participants with a certain level of spelling and typing proficiency. You will need to meet certain criteria in the practice trials to be able to continue.</p>"+
-        "<p>Your typing proficiency will be assessed in a typing test. First, you will be asked to copy a text <strong>without</strong> strict time limits. Then, you will be asked to copy 15 words <strong>within</strong> time limits. You will need to finish typing before the deadline.</p></div>",
-    prompt: "<p>Press the SPACE key to continue.</p>",
+
+
+// Typing test
+instr_typingtest = {};
+instr_typingtest.typingparagraph = {
+    type:  "html-keyboard-response",
+    prompt: "<p>Press the SPACE BAR to start the typing test.</p>",
     timing_post_trial: 1000,
     choices: [' '],
-};
+    stimulus: "<h2>Typing test</h2>"+
+        "<div align='left'><p>For this experiment, we are looking for participants with a certain <b>level of spelling and typing proficiency</b>. </p>" +
+        "<p>You will need to meet certain criteria in the practice trials to be able to continue.</p>"+
+        "<p>Your typing proficiency will be assessed in a <b>typing test</b>. " +
+        "<p>You're going to have to <b>copy three texts</b>."
+      }
 
-var instructions_block4 = {
-    type: "html-keyboard-response",
-    stimulus:"<h2>Ready?</h2>"+
-        "<div align='left'><p>Some final notes before you begin:</p>"+
-        "<ul><li>The stimulus in each trial can be a single English word, a sequence of 4 letters, a sequence of 4 numbers.</li>"+
-        "<li>You <strong>don't</strong> need to press any specific key after each word, it will automatically move on to the next trial.</li>"+
-        "<li>You <strong>don't</strong> need to use the SHIFT key.</li>"+
-        "<li>Try to type the words as fast and as accurately as you can.</li>"+
-        "<li>Do not try to correct yourself, it's okay if you make mistakes, but remember to finish typing before the deadline.</li>"+
-        "<li>It is <strong>very</strong> important that you type 4 keystrokes on each trial.</li>"+
-        "<li>There is no way to pause the session. However, there will be regular breaks during the session.</li></ul>"+
-        "<p>You may now start the session.</p>"+
-        "<p><strong>Do not close or reload the page after this point!</strong> If you close or reload the page before the session is complete, you will not be able to continue.</p></div>",
-    prompt: "<p>Press the SPACE key to begin.</p>",
+instr_typingtest.typingwords = {
+    type:  "html-keyboard-response",
+    prompt: "<p>Press the SPACE BAR to continue.</p>",
     timing_post_trial: 1000,
     choices: [' '],
-};
+    stimulus: "<p> <b>Well done ! </b></p>" +
+            "<p>Now, you will be asked to copy 15 words <strong>within a time limit </strong>. </p>"+
+            "<p>You will need to finish typing before the bar at the top of the screen fills up.</p></div>"
+}
+config.instr_typingtest = instr_typingtest;
 
-timeline_instruct = [instructions_block1, instructions_block2, instructions_block3, instructions_block4];
+// Typing task
+instr_typingtask= {};
 
 
-config.instructions = timeline_instruct;
+instr_typingtask.typingtask = {
+    type:  "html-keyboard-response",
+    prompt: "<p>Press the SPACE BAR to continue.</p>",
+    timing_post_trial: 1000,
+    choices: [' '],
+    stimulus: "<h2>Main experiment</h2>"+
+        "<div align='left'><p>We are going to start the main experiment now.</p></div>" +
+        "<div align='left'><p><br>As before, you will see sequences of four <b>letters</b> or <b>numbers</b> " +
+        "and you will have to <b>type</b> them as quickly as you can.<br>" +
+        "The sequence will be either a single <b>word</b>, <b>four random letters</b> or <b>four digits</b>." +
+        "<p><br>As before, you will need to finish typing <b>before the bar fills up</b>. " +
+        "Start typing as soon you see the word, as fast as you can. </p> </div>" +
+        "<p><div align='left'><p><br>What you type will be <b>masked</b> as if you were typing a <b>password</b>." +
+        "<p><br> It is a difficult task and <b>it is ok to make mistakes</b> !" +
+        " Do not correct what you typed </b> by using the backspace. Always type a sequence of 4 keystrokes. </p></div>"
+      }
+//config.instr_typingtask = instr_typingtask.typingtask;
+
+
+instr_typingtask.confidence = {
+          type:  "html-keyboard-response",
+          prompt: "<p>Press the SPACE BAR to continue.</p>",
+          timing_post_trial: 1000,
+          choices: [' '],
+          stimulus: "<h2>Rate your typing accuracy</h2>"+
+          "<div align='left'><p>After each typing sequence, you will have to <b>rate how confident you felt</b>" +
+          " you have <b>typed the sequence correctly</b>.</p>" +
+          "<p><br>After you finished typing, a scale will be presented on the screen.</p>" +
+          "<ul><li>The <b>left end of the scale</b> corresponds to being <b>certain you made an error</b> when typing the sequence.</li>" +
+          "<li>The <b>right end of the scale</b> corresponds to being <b>certain you typed the sequence correctly</b>.</li></div>" +
+          "<div align='left'><p><br>Move the cursor along the scale to indicate how confident you feel about what you typed. " +
+          "To move the cursor, you will have to use the <b>SHIFT keys</b>. " +
+          "Locate them on your keyboard: they are underneath the ENTER key on the right, and underneath the CAP LOCK key on the left. " +
+          "<ul><li>Press the <b>SHIFT key</b> on the <b>left</b> of your keyboard to <b>move the cursor to the left</b>.</li>" +
+          "<li> Press the <b>SHIFT key</b> on the <b>rigth</b> of your keyboard to <b>move the cursor to the right</b>.</li></div>" +
+          "<div align='left'>Press the space bar to register your confidence and start the next trial.</div>"
+  }
+//config.instr_confidence = instr_typingtask.confidence;
+
+instr_typingtask.ready = {
+          type:  "html-keyboard-response",
+          prompt: "<p>Press the SPACE BAR to start the experiment.</p>",
+          timing_post_trial: 1000,
+          choices: [' '],
+          stimulus: "<h2>Ready?</h2>"+
+        "<div align='left'><p>Remember:</p>"+
+        "<ul><li><b>Type the sequence</b> of four letters or numbers.</li>"+
+        "<li>Finish typing <b>before the deadline</b>."+
+        "<li><b>Don't correct yourself</b>, it's <b>ok to make mistakes</b>!</li>"+
+        "<li>Rate <b>how confident</b> you feel you typed the sequence correctly.</li></ul>"+
+        "<p>Let's start!</p>"
+}
+config.instr_typingtask = instr_typingtask;
+
+
+
+//timeline_instruct = [instructions_block1, instructions_block2, instructions_block3, instructions_block4];
+//config.instructions = timeline_instruct;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //----------------------------------------------------------------------------------------//
@@ -371,26 +461,25 @@ config.instructions = timeline_instruct;
 //----------------------------------------------------------------------------------------//
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-
+// Typing paragraphs
 var trial_typtest1 = {
     type: 'html-keyboard-multi-response',
     stimulus:jsPsych.timelineVariable('stimulus'),
 //    trial_duration: thisstaircase.SCval,
-    prompt: "<p><i>Press ENTER to continue.</i></p>",
+    prompt: "<p><i>Copy the text and press ENTER when you have finished.</i></p>",
     visual_feedback: 'word',
     key_terminator: 13,
     data: {phase: 'copytext'},
   }
 
-var timeline_typtest = {
-  timeline: [trial_typtest1],
-  timeline_variables: copytexts,
-}
+
+config.typtest_paragraph = trial_typtest1;
+
 
 // Add debrief trial here as well to compute typing speed (at least) on texts
 //config.typtest = timeline_typtest;
 
-
+// Typing words
 var trial_typtest2 = {
     type: 'html-keyboard-multi-response',
     stimulus:jsPsych.timelineVariable('stimulus'),
@@ -411,6 +500,9 @@ var trial_typtest2 = {
   }
 
 
+config.typtest_words = trial_typtest2;
+
+// Debrief test
   var debrief_block2 = {
     type: "html-keyboard-response",
     stimulus: '', //eventually something transparent
@@ -430,6 +522,9 @@ var trial_typtest2 = {
     },
   };
 
+config.typtest_debrief_block2 = debrief_block2;
+
+
   // a trial that will eventually be very short and transparent to get out of the experiment if need be
   var debrief_block3 = {
     type: "html-keyboard-response",
@@ -445,12 +540,7 @@ var trial_typtest2 = {
 //          endExperimentEarly(); //  something to get participants out
       }},};
 
-var timeline_typtest2 = {
-    timeline: [trial_typtest2],
-    timeline_variables: wordstest2,
-  }
-
-  config.typtest = [timeline_typtest, timeline_typtest2, debrief_block2, debrief_block3];
+config.typtest_debrief_block3 = debrief_block3;
 //  config.typtest = [timeline_typtest2, debrief_block2, debrief_block3];
 
 
