@@ -117,7 +117,12 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
       // calculate response accuracy
       //finalResp = text.value + jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
       //accuracy = finalResp == trial.stimulus;
-      response.accuracy = trial.stimulus.toUpperCase() == response.char.join("");
+      if (response.char.length>0){
+        response.accuracy = trial.stimulus.toUpperCase() == response.char.join("");
+      }
+      else {
+        response.accuracy = -1;
+      }
       numberwongletterstyped = trial.stimulus.length - response.char.length;
 
 

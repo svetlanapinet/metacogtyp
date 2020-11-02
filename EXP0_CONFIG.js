@@ -1,9 +1,9 @@
-function EXP0_CONFIG(thiscondition){
+function EXP0_CONFIG(){
   // the place to change parameters
 
   var jsPsych = window['jsPsych'];
 
-  var config = {};
+
   var width = window.innerWidth;
   var height = window.innerHeight;
 
@@ -14,8 +14,43 @@ function EXP0_CONFIG(thiscondition){
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
 config.debug = false; // Shorter stimulus sequence
-config.do_typingtest = true; // Shorter stimulus sequence
-config.do_instrmaintask = true; // Shorter stimulus sequence
+config.do_instrwelcome = false; // Welcoming instructions
+config.do_typingtest = false; // Shorter stimulus sequence
+config.do_instrmaintask = false; // Shorter stimulus sequence
+
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+//----------------------------------------------------------------------------------------//
+//                                    DESIGN                                              //
+//----------------------------------------------------------------------------------------//
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+
+
+//---------------------------------------------------------------------- //
+// Structure ----------------------------------------------------------- //
+
+config.nb_blockspercond = 1;
+if (config.debug == true){config.nb_blockspercond = 1;}
+
+
+// Randomize the order of the blocks
+var factors = {
+   stimlist: [0,1,2,3]
+   //    stimlist: ['config.list_word_shuf','config.list_chunk_shuf', 'config.list_nonchunk_shuf','config.list_number_shuf']
+}
+
+config.perm_blockorder = jsPsych.randomization.factorial(factors, 1);
+var labels = ['words','chunks','nonchunks','numbers'];
+var labels_ordered = [];
+for (var thislabel = 0;thislabel<4;thislabel++){
+  labels_ordered.push(labels[config.perm_blockorder[thislabel].stimlist])
+}
+config.perm_blockorderLABELS = labels_ordered;
+
+console.log('config.perm_blockorder',config.perm_blockorder)
+console.log('config.perm_blockorderLABELS',config.perm_blockorderLABELS)
+
+
 
 
   //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -24,14 +59,13 @@ config.do_instrmaintask = true; // Shorter stimulus sequence
   //----------------------------------------------------------------------------------------//
   //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-  var thisstaircase = {};
 
   //---------------------------------------------------------------------- //
   // Parameters that can be changed -------------------------------------- //
 
   thisstaircase.StepSize                  = 250;
-  thisstaircase.SCvalstartppoint          = [1800,2000,2500,3000];
-  thisstaircase.SCval                     = thisstaircase.SCvalstartppoint[thiscondition];
+  thisstaircase.SCvalstartppoint          = [1000,1500,2500,3000];
+  thisstaircase.SCval                     = 1000;//thisstaircase.SCvalstartppoint[thiscondition];
   thisstaircase.min_step_size             = 16;
   thisstaircase.numTrials                 = 150;// nb max
   thisstaircase.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
@@ -67,7 +101,7 @@ config.len_conf               = 600000; //3000; MAX DURATION OF THE CONFIDENCE
 config.len_fixation           = 900;//900;
 config.len_respmapremind      = 2000;
 config.len_word               = 3000;
-config.len_TimePressureScreen  = 3000;
+config.len_TimePressureScreen  = 500;
 //---------------------------------------------------------------------- //
 // Block onset  ----------------------------------------------------------- //
 
@@ -75,28 +109,36 @@ var wordblock = {
     type: 'html-keyboard-response',
     prompt: "<p>Press the SPACE BAR to start.</p>",
     stimulus: '<p>This is a <b>word</b> block !</p>'+
-              '<p>It should last 2 minutes.</p>',
+    '<ul><li> Use your <b>left hand</b> for the letters [ <b>W</b> ] [ <b>E</b> ] [ <b>R</b> ] [ <b>T</b> ]</b>.</li>'+
+    '<li> Use your <b>right hand</b> for the letter [ <b>U</b> ] [ <b>I</b> ] [ <b>O</b> ] [ <b>P</b> ].</li></ul>'+
+    '<div><p>The block should last 2 minutes.</p></div>',
 };
 
 var chunkblock = {
     type: 'html-keyboard-response',
     prompt: "<p>Press the SPACE BAR to start.</p>",
     stimulus: '<p>This is a <b>random letter sequence</b> block !</p>'+
-              '<p>It should last 2 minutes.</p>',
+    '<ul><li> Use your <b>left hand</b> for the letters [ <b>W</b> ] [ <b>E</b> ] [ <b>R</b> ] [ <b>T</b> ]</b>.</li>'+
+    '<li> Use your <b>right hand</b> for the letter [ <b>U</b> ] [ <b>I</b> ] [ <b>O</b> ] [ <b>P</b> ].</li></ul>'+
+    '<div><p>The block should last 2 minutes.</p></div>',
 };
 
 var nonchunkblock = {
     type: 'html-keyboard-response',
     prompt: "<p>Press the SPACE BAR to start.</p>",
     stimulus: '<p>This is a <b>random letter sequence</b> block !</p>'+
-              '<p>It should last 2 minutes.</p>',
+              '<ul><li> Use your <b>left hand</b> for the letters [ <b>W</b> ] [ <b>E</b> ] [ <b>R</b> ] [ <b>T</b> ]</b>.</li>'+
+              '<li> Use your <b>right hand</b> for the letter [ <b>U</b> ] [ <b>I</b> ] [ <b>O</b> ] [ <b>P</b> ].</li></ul>'+
+              '<div><p>The block should last 2 minutes.</p></div>',
 };
 
 var numberblock = {
     type: 'html-keyboard-response',
     prompt: "<p>Press the SPACE BAR to start.</p>",
     stimulus: '<p>This is a <b>number sequence</b> block !</p>'+
-              '<p>It should last 2 minutes.</p>',
+              '<ul><li> Use your <b>left hand</b> for the digits <b>1 to 4</b>.</li>'+
+              '<li> Use your <b>right hand</b> for the digits <b>5 to 9</b>.</li></ul>'+
+              '<div><p>The block should last 2 minutes.</p></div>',
 };
 var instr_block = [];
 instr_block.push(wordblock);
@@ -172,12 +214,15 @@ for (thisstim = 0;thisstim < config.ntrialperblock; thisstim++){ // Loop across
     }
     var element = {}
     element.stimulus = thistring.join("");
-    element.data = "number";
+    element.typestim = "numbers";
     number_list.push(element);
 };
 config.list_number_shuf = jsPsych.randomization.shuffle(number_list);
 
 
+
+
+// The stim template
 var trial_word = {
     type: 'html-audio-keyboard-multi-response',
     stimulus:jsPsych.timelineVariable('stimulus'),
@@ -187,19 +232,29 @@ var trial_word = {
     image: null,
     visual_feedback: 'aster',
     choices: rangei(48,90),
+    data: {thiscondition: jsPsych.timelineVariable('typestim')},
+
     on_finish: function(data){
 
          console.log('ACC', data.acc)
          console.log('Stairecase Val', thisstaircase.SCval)
+         console.log('data.thiscondition',data.thiscondition)
+         console.log("CURRENT thisstaircase.SCval", thisstaircase.SCval)
 
-         thisstaircase.nTrials += 1;
+
+         //data.typestim =  jsPsych.timelineVariable('typestim');
+         //data.trialnumber = thisstaircase.nTrialSC;
+         // Update condition number
+         //data.thiscondition = jsPsych.timelineVariable('typestim');
 
          // get the data of the previous rdk stim
          //var rdk_data = jsPsych.data.get().last(2).values()[0];
          var right_answer = data.acc;
-         //console.log("bonne rep ?", right_answer)
+
          data.CorrectPerceptual = data.acc;
          thisstaircase.nTrialSC += 1;
+         thisstaircase.nTrials += 1;
+
          thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(!!right_answer);
          thisstaircase = expAK_staircase_function(thisstaircase);
          //data.dir_stair = thisstaircase.dir[1];
@@ -209,13 +264,33 @@ var trial_word = {
            toomanyletterstyped = false;
          if (data.toofewletterstyped < 0 ){
              toomanyletterstyped = true;}
+
+        //console.log('data',data)
+        //console.log('config',config)
+        console.log('okonycroit',config.perm_blockorder.length)
+
+        if (thisstaircase.nTrials == config.nb_blockspercond * config.ntrialperblock - 1){
+          thisstaircase.nTrials = 0;
+          thisstaircase.nTrialSC = 0;
+          var thatstheconditionwerein = config.perm_blockorderLABELS.indexOf(data.thiscondition);
+          var nextcond = thatstheconditionwerein + 1;
+          if (nextcond < config.perm_blockorder.length){
+          thisstaircase.SCval =   thisstaircase.SCvalstartppoint[config.perm_blockorder[nextcond].stimlist];
+          console.log('UPDATE END BLOCK next thisstaircase.SCval is ',thisstaircase.SCval)
+        }
+          //thisstaircase.SCval =
+        }
+
+        console.log("NEXT thisstaircase.SCval", thisstaircase.SCval)
+
         return [toofewletterstyped,toomanyletterstyped]
         }
   }
 
 
-
 config.stim_trial_word = trial_word;
+
+
 var thisstimlist = [];
 thisstimlist.push(config.list_word_shuf);
 thisstimlist.push(config.list_chunk_shuf);
@@ -228,8 +303,8 @@ config.stimlist = thisstimlist;
 //---------------------------------------------------------------------- //
 // Confidence  ---------------------------------------------------------- //
 
-config.Conf_labels             = ["<font size=6> Sure Correct </font>",
-                                 "<font size=6> Sure Error </font>"]
+config.Conf_labels             = ["<font size=6> Sure Error </font>",
+                                 "<font size=6> Sure Correct</font>"]
 config.Conf_limits             = [0, 4];
 config.Conf_size               = function(){
                                     var longueur = config.diameter*3;
@@ -303,33 +378,7 @@ config.Feedback_TooManyLetters_screen = Feedback_TooManyLetters_screen;
 
 
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
-//----------------------------------------------------------------------------------------//
-//                                    DESIGN                                              //
-//----------------------------------------------------------------------------------------//
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-
-//---------------------------------------------------------------------- //
-// Structure ----------------------------------------------------------- //
-
-config.nb_blockspercond = 1;
-if (config.debug == true){config.nb_blockspercond = 1;}
-
-
-// Randomize the order of the blocks
-var factors = {
-   stimlist: [0,1,2,3]
-
-//    stimlist: ['config.list_word_shuf','config.list_chunk_shuf', 'config.list_nonchunk_shuf','config.list_number_shuf']
-    //ms_delay: [100, 200]
-}
-
-config.perm_blockorder = jsPsych.randomization.factorial(factors, 1);
-//console.log('lala',config.perm_blockorder[0].stimlist)
-
-//---------------------------------------------------------------------- //
-// Conditions and randomization ---------------------------------------- //
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -409,7 +458,7 @@ instr_typingtask.typingtask = {
         "<p><br>As before, you will need to finish typing <b>before the bar fills up</b>. " +
         "Start typing as soon you see the word, as fast as you can. </p> </div>" +
         "<p><div align='left'><p><br>What you type will be <b>masked</b> as if you were typing a <b>password</b>." +
-        "<p><br> It is a difficult task and <b>it is ok to make mistakes</b> !" +
+        "<p><br> It is a difficult task and <b>it is ok to make mistakes</b> ! Aim to type the sequence correctly around 70% of the times." +
         " Do not correct what you typed </b> by using the backspace. Always type a sequence of 4 keystrokes. </p></div>"
       }
 //config.instr_typingtask = instr_typingtask.typingtask;
@@ -474,6 +523,7 @@ var trial_typtest1 = {
 
 
 config.typtest_paragraph = trial_typtest1;
+
 
 
 // Add debrief trial here as well to compute typing speed (at least) on texts

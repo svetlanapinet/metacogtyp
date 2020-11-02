@@ -1,8 +1,10 @@
 // TIMELINE OF THE EXPERIMENT
 
+var config = {};
+var thisstaircase = {};
 
 config = EXP0_CONFIG();
-
+//thisstaircase = conrfig.stair;
 
 var Conf_slider = Object.assign({}, config.Conf_slider_template);
 var too_slow_response = {
@@ -22,9 +24,10 @@ var mytimeline = []
 
 
 // ******* Wecome instructions *************************************************
+if (config.do_instrwelcome){
 mytimeline = mytimeline.concat(config.instr_welcome.intro1);
 mytimeline = mytimeline.concat(config.instr_welcome.intro2);
-
+}
 
 // ************** Typing test *************************************************
 if (config.do_typingtest){
@@ -49,24 +52,28 @@ mytimeline = mytimeline.concat(config.typtest_debrief_block3)
 
 // ************** Main task *************************************************
 
-if (config.do_instrmaintask)
+if (config.do_instrmaintask){
 mytimeline = mytimeline.concat(config.instr_typingtask.typingtask);
 mytimeline = mytimeline.concat(config.instr_typingtask.confidence);
 mytimeline = mytimeline.concat(config.instr_typingtask.ready);
-
+}
 for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // Loop across conditions (Word,  chunks, non-chunk, numbers)
 
 
 
     // Get the condition number from the randomization
-    thiscondition = config.perm_blockorder[thiscond].stimlist;
-    console.log('config.stair.SCvalstartppoint[thiscondition]',config.stair.SCvalstartppoint[thiscondition])
+    var thiscondition = config.perm_blockorder[thiscond].stimlist;
+    console.log('thiscondition',thiscondition)
+
 
     // Reinitialize the STAIRCASE
-    config = EXP0_CONFIG(thiscondition);
-    //thisstaircase.SCval = config.stair.SCvalstartppoint[thiscondition]
-    //console.log('
+    //config = EXP0_CONFIG(thiscondition);
+    thisstaircase.SCval = config.stair.SCvalstartppoint[config.perm_blockorder[0].stimlist];
+    console.log('WE WILL START WITH SCval at ',thisstaircase.SCval)
+    //console.log('thisstaircase',thisstaircase)
 
+
+    // the conf slider
     var Conf = {
         timeline: [Conf_slider],
         conditional_function: function(){
@@ -89,7 +96,7 @@ for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // 
 
     // Create time line for a trial with stim + confidence + little break
     var timelineTrials = {
-      timeline: [config.stim_trial_word,feedbackTimePressure,feedbackToomanyletters,Conf,config.stim_pause], //Conf_slider,
+      timeline: [config.stim_trial_word ,feedbackTimePressure,feedbackToomanyletters,Conf,config.stim_pause], //Conf_slider,
       //timeline_variables: eval(config.perm_blockorder[thiscond].stimlist)
       timeline_variables: config.stimlist[thiscondition]
     }
@@ -99,7 +106,7 @@ for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // 
         //timeline.push(after_choice);
 
     // Replicate according to the number of block you want for each condition
-    for (var thisblockrepet = 0; thisblockrepet < config.nb_blockspercond; thisblockrepet++){
+    for (var thisblockrepet = 1; thisblockrepet <= config.nb_blockspercond; thisblockrepet++){
           mytimeline.push(config.instr_block[thiscondition], timelineTrials);
       }
   }
@@ -129,10 +136,25 @@ jsPsych.init({
 	timeline: mytimeline,
   on_finish:
   function() {
-    jsPsych.data.displayData('json');
+    //jsPsych.data.displayData('json');
   //var all_data = jsPsych.data.get().csv();
     var all_data = jsPsych.data.get().json();
     var outputname = "data" + config.randomIntFromInterval(1,999);
     config.saveData(all_data, outputname);
   },
 });
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+//----------------------------------------------------------------------------------------//
+//--------------------------------- Usefull functions  -----------------------------------//
+//----------------------------------------------------------------------------------------//
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+// Range of numbers
+function rangei(start,end){
+  return Array(end - start + 1).fill().map((_, idx) => start + idx)
+
+  // var list = [];
+  // for (var i = lowEnd; i <= highEnd; i++) {
+    // list.push(i);
+    // return list
+}
