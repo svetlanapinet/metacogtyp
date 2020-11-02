@@ -71,7 +71,8 @@ console.log('config.perm_blockorderLABELS',config.perm_blockorderLABELS)
   thisstaircase.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
   thisstaircase.thresholdTrialN           = 40;
   thisstaircase.nRunHalve                 = 20; // after how many reversals should we reduce stepsize ?
-
+  thisstaircase.minval                    = 200;
+  thisstaircase.maxval                    = 20000;
   //---------------------------------------------------------------------- //
   // Initialisations ----------------------------------------------------- //
 
@@ -255,7 +256,7 @@ var trial_word = {
          thisstaircase.nTrialSC += 1;
          thisstaircase.nTrials += 1;
 
-         thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(!!right_answer);
+         thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(right_answer);
          thisstaircase = expAK_staircase_function(thisstaircase);
          //data.dir_stair = thisstaircase.dir[1];
          toofewletterstyped = false;
@@ -267,7 +268,7 @@ var trial_word = {
 
         //console.log('data',data)
         //console.log('config',config)
-        console.log('okonycroit',config.perm_blockorder.length)
+        //console.log('okonycroit',config.perm_blockorder.length)
 
         if (thisstaircase.nTrials == config.nb_blockspercond * config.ntrialperblock - 1){
           thisstaircase.nTrials = 0;

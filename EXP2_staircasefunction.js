@@ -14,25 +14,27 @@ function expAK_staircase_function(thisstaircase){
       var back2 = lastTrialsCorrect[lastTrialsCorrect.length-2]; // Two trials ago
       var reverse = false; // Initialize reversal to false
 
-
+      console.log('back1',back1)
+      console.log('back2',back2)
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //-------------------------------------------------------------------------------------------------//
 // Update SCvalerence or not and check if there was a reversal
 
-      if(back1) // If the last trial was correct
+      if(back1 == 1) // If the last trial was correct
       {
-            if(back2) // AND two trials ago were correct
+            if(back2 == 1) // AND two trials ago were correct
             {
                   SCval -= thisstaircase.StepSize
                   lastTrialsCorrect[lastTrialsCorrect.length-1] = false; // s'il repond correctement à la prochaine ça fera 3 bonne réponses de suite mais il ne faudra pas baisser la SCvalérence ...
                   dir[0] = dir[1]; // Set the direction two trials ago to the direction one trial ago
                   dir[1] = "down"; // Set the direction one trial ago to up
                   reverse = check_reversal(dir); // Check if there was a reversal in direction as a result of the step down
+                  console.log('How did we get here ?')
             }
             // If the last trial was correct and two trials ago were wrong, do nothing.
       }
-      else // If the last trial was wrong
+      else if (back1 == 0) // If the last trial was wrong
       {
 
             SCval += thisstaircase.StepSize
