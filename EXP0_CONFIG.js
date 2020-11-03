@@ -256,6 +256,10 @@ var trial_word = {
          thisstaircase.nTrialSC += 1;
          thisstaircase.nTrials += 1;
 
+         // Save parameters of staircase in data structure // add back1/back2?
+         data.SCval = thisstaircase.SCval;
+         console.log("CURRENT data structure", data)
+
          thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(right_answer);
          thisstaircase = expAK_staircase_function(thisstaircase);
          //data.dir_stair = thisstaircase.dir[1];

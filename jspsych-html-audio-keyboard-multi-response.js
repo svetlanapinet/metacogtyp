@@ -133,6 +133,7 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
         "key_press": response.key,
         "key_name": response.char,
         "acc": response.accuracy,
+        //"trial_duration": trial.trial_duration, // should be the value of the staircase
         "toofewletterstyped": numberwongletterstyped
       };
       console.log('response.char',response.char)
