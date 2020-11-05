@@ -91,9 +91,13 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
     var response = {
       rt: [],
       key: [],
-      char: [],
+      char: "",
       acc: []
     };
+
+    var finalKeys = "";
+    var finalResp = "";
+
 
     // feedback element
     var feedback_element = document.createElement('p');
@@ -118,7 +122,8 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
       //finalResp = text.value + jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
       //accuracy = finalResp == trial.stimulus;
       if (response.char.length>0){
-        response.accuracy = trial.stimulus.toUpperCase() == response.char.join("");
+        //response.accuracy = trial.stimulus.toUpperCase() == response.char.join("");
+        response.accuracy = trial.stimulus.toUpperCase() == response.char;
       }
       else {
         response.accuracy = 0;
@@ -128,11 +133,13 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
 
       // gather the data to store for the trial
       var trial_data = {
-        "rt": response.rt,
+        "rt": JSON.stringify(response.rt),
         "stimulus": trial.stimulus,
-        "key_press": response.key,
+        "key_press": JSON.stringify(response.key),
+        "key_press2": response.key,
         "key_name": response.char,
         "acc": response.accuracy,
+        "total_response": finalKeys,
         //"trial_duration": trial.trial_duration, // should be the value of the staircase
         "toofewletterstyped": numberwongletterstyped
       };
@@ -166,11 +173,23 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
         response = info;
       }
 
+      // construct arrays of RT, IKI and keys -- from previous plugin
+//      if (info.key !== null) {
+//        responseKeys.push(info.key);
+//        responseTimes.push(info.rt);
+//        finalKeys += jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
+
+//        text = document.getElementById('jspsych-audio-keyboard-multi-response-feedback');
+//        finalResp = text.value + jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
+//        };
+
       // VISUAL FEEDBACK OF WHAT IS TYPED
       //console.log('document.getElementById("typing_feedback")',document.getElementById("typing_feedback"))
       response.key.push(info.key);
       response.rt.push(info.rt);
-      response.char.push(String.fromCharCode(info.key));
+      //response.char.push(String.fromCharCode(info.key));
+      response.char += String.fromCharCode(info.key);
+      finalKeys += jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(info.key);
 
 //     display_element.innerHTML += String.fromCharCode(info.key).toUpperCase();
 //     display_element.style.fontFamily =  'text-security-disc';

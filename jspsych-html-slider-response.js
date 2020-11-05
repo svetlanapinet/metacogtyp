@@ -261,7 +261,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
       // save data
       var trialdata = {
-        "rt": response.rt,
+        "rt": response.rt, // for now this is null. If we want it we need to add some measure of response time when first button is pressed
         "response": response.response,
         "stimulus": trial.stimulus,
         "finished": trial.finished,

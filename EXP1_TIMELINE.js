@@ -17,6 +17,11 @@ var too_slow_response = {
 instr_template = config.instr_template;
 thisinstr = instr_template;
 
+
+
+// Use this to add general information to data - maybe see when making the link with data collection platforms
+//jsPsych.data.addProperties({subject: 1, condition: 'control'});
+
 // ----------------------------------------------------------------------------
 // CREATE BASIC TIMELINE ------------------------------------------------------
 

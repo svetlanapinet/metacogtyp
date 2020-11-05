@@ -138,7 +138,7 @@ var numberblock = {
     prompt: "<p>Press the SPACE BAR to start.</p>",
     stimulus: '<p>This is a <b>number sequence</b> block !</p>'+
               '<ul><li> Use your <b>left hand</b> for the digits <b>1 to 4</b>.</li>'+
-              '<li> Use your <b>right hand</b> for the digits <b>5 to 9</b>.</li></ul>'+
+              '<li> Use your <b>right hand</b> for the digits <b>6 to 9</b>.</li></ul>'+
               '<div><p>The block should last 2 minutes.</p></div>',
 };
 var instr_block = [];
@@ -349,7 +349,8 @@ var Conf_slider_template = {
     choices: config.Conf_choices,
     speed: config.Conf_speed,
     trial_duration: config.len_conf,
-
+    data: {thiscondition: jsPsych.timelineVariable('typestim')},
+//    on_finish: function(data){console.log('confidence data', data)}
 }
 
 // Randomize the order of size of the slider
@@ -366,6 +367,8 @@ var Feedback_TimePressure_screen = {
     stimulus: 'You have not pressed enough keys. \n\n Respond faster !! ',
     choices:jsPsych.NO_KEYS,
     trial_duration: config.len_TimePressureScreen,
+    data: {thiscondition: jsPsych.timelineVariable('typestim'),
+  feedback: 'notenough'},
 
 }
 
@@ -377,6 +380,8 @@ var Feedback_TooManyLetters_screen = {
     stimulus: 'You have pressed too many keys! ',
     choices:jsPsych.NO_KEYS,
     trial_duration: config.len_TimePressureScreen,
+    data: {thiscondition: jsPsych.timelineVariable('typestim'),
+  feedback: 'toomany'},
 
 }
 config.Feedback_TooManyLetters_screen = Feedback_TooManyLetters_screen;
