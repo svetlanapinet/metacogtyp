@@ -192,7 +192,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
 
                 // if the arrow key is not pressed anymore stop the slider
                 if ( !arrow_pressed || !in_slider_plugin){
-                  console.log("clear")
+                  //console.log("clear")
                   clearInterval(move_slider)
                 }
 
@@ -212,7 +212,7 @@ jsPsych.plugins['html-slider-response'] = (function() {
     if (typeof in_slider_plugin !== 'undefined') {
       if (in_slider_plugin){
         var k = e.keyCode;
-        console.log('in keyup', k)
+        //console.log('in keyup', k)
           arrow_pressed = false;
           if(k == trial.response_ends_trial){
             spacebarpressed = true;

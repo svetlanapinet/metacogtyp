@@ -73,7 +73,8 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
     }
 
     // add stimulus
-    console.log("trial.stimulus",trial.stimulus);
+    console.log(" ********************** NEW WORD TO TYPE **************************")
+    console.log("Word to type : ",trial.stimulus);
      new_html += '</p> '+ trial.stimulus.toUpperCase() +'</p></div>';
 
 
@@ -143,7 +144,7 @@ jsPsych.plugins["html-audio-keyboard-multi-response"] = (function() {
         //"trial_duration": trial.trial_duration, // should be the value of the staircase
         "toofewletterstyped": numberwongletterstyped
       };
-      console.log('response.char',response.char)
+      console.log('Word typed : ',response.char)
 
       // clear the display
       display_element.innerHTML = '';

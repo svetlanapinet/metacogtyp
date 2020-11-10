@@ -14,8 +14,8 @@ function expAK_staircase_function(thisstaircase){
       var back2 = lastTrialsCorrect[lastTrialsCorrect.length-2]; // Two trials ago
       var reverse = false; // Initialize reversal to false
 
-      console.log('back1',back1)
-      console.log('back2',back2)
+      //console.log('back1',back1)
+      //console.log('back2',back2)
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //-------------------------------------------------------------------------------------------------//
@@ -30,7 +30,7 @@ function expAK_staircase_function(thisstaircase){
                   dir[0] = dir[1]; // Set the direction two trials ago to the direction one trial ago
                   dir[1] = "down"; // Set the direction one trial ago to up
                   reverse = check_reversal(dir); // Check if there was a reversal in direction as a result of the step down
-                  console.log('How did we get here ?')
+                  //console.log('How did we get here ?')
             }
             // If the last trial was correct and two trials ago were wrong, do nothing.
       }

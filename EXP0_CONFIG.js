@@ -64,8 +64,8 @@ console.log('config.perm_blockorderLABELS',config.perm_blockorderLABELS)
   // Parameters that can be changed -------------------------------------- //
 
   thisstaircase.StepSize                  = 250;
-  thisstaircase.SCvalstartppoint          = [1000,1500,2500,3000];
-  thisstaircase.SCval                     = 1000;//thisstaircase.SCvalstartppoint[thiscondition];
+  thisstaircase.SCvalstartppoint          = [1000,1500,2000,2800];
+  //thisstaircase.SCval                     = 1000;//thisstaircase.SCvalstartppoint[thiscondition];
   thisstaircase.min_step_size             = 16;
   thisstaircase.numTrials                 = 150;// nb max
   thisstaircase.variableStepSize          = true; // true for variable stepSize, false for fixed stepsize
@@ -178,15 +178,20 @@ var word_lists = listwords;
 if (config.debug == true) {word_lists = listtest;}
 config.list_word_shuf = jsPsych.randomization.shuffle(word_lists);
 config.ntrialperblock =  word_lists.length
+console.log('config.ntrialperblock',config.ntrialperblock)
 
 // then select the number of corresponding stim in the chunk list
 var chunk_lists = listchunks;
 config.list_chunk_shuf = jsPsych.randomization.shuffle(chunk_lists);
-config.list_chunk_shuf = config.list_chunk_shuf.slice(1, config.ntrialperblock );
+config.list_chunk_shuf = config.list_chunk_shuf.slice(0, config.ntrialperblock);
+//console.log('config.list_chunk_shuf',config.list_chunk_shuf)
+
 
 var nonchunk_lists = listnonchunks;
 config.list_nonchunk_shuf = jsPsych.randomization.shuffle(nonchunk_lists);
-config.list_nonchunk_shuf = config.list_nonchunk_shuf.slice(1, config.ntrialperblock );
+config.list_nonchunk_shuf = config.list_nonchunk_shuf.slice(0, config.ntrialperblock );
+//console.log('config.list_nonchunk_shuf',config.list_nonchunk_shuf)
+
 
 // Convert the non chunk into number stimuli
 var thisstim;
@@ -229,7 +234,9 @@ var trial_word = {
     stimulus:jsPsych.timelineVariable('stimulus'),
     progressbar:true,
     promptincap: true,
-    trial_duration: thisstaircase.SCval,
+    trial_duration: function(data){ // So that the duration depends on the staircase value on that trial
+                    //console.log('thisstaircase.SCval',thisstaircase.SCval)
+                    return thisstaircase.SCval},
     image: null,
     visual_feedback: 'aster',
     choices: rangei(48,90),
@@ -237,32 +244,33 @@ var trial_word = {
 
     on_finish: function(data){
 
+         // Let's display some info on the screen
          console.log('ACC', data.acc)
          console.log('Stairecase Val', thisstaircase.SCval)
          console.log('data.thiscondition',data.thiscondition)
          console.log("CURRENT thisstaircase.SCval", thisstaircase.SCval)
 
-
-         //data.typestim =  jsPsych.timelineVariable('typestim');
-         //data.trialnumber = thisstaircase.nTrialSC;
-         // Update condition number
-         //data.thiscondition = jsPsych.timelineVariable('typestim');
-
-         // get the data of the previous rdk stim
-         //var rdk_data = jsPsych.data.get().last(2).values()[0];
+        // Update where we are in the staircase
          var right_answer = data.acc;
-
          data.CorrectPerceptual = data.acc;
          thisstaircase.nTrialSC += 1;
          thisstaircase.nTrials += 1;
+         thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(right_answer);
+         console.log("nTrialSC", thisstaircase.nTrialSC)
 
          // Save parameters of staircase in data structure // add back1/back2?
-         data.SCval = thisstaircase.SCval;
-         console.log("CURRENT data structure", data)
+         data.SC_SCval                = thisstaircase.SCval;
+         data.SC_dir                  = thisstaircase.dir;
+         data.SC_responseMatrix       = thisstaircase.responseMatrix;
+         data.SC_nTrialSC             = thisstaircase.nTrialSC;
+         data.SC_nTrials              = thisstaircase.nTrials;
+         //console.log("CURRENT data structure", data)
 
-         thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(right_answer);
+         // Now let's calculate the new staircase value based on the accuracy
          thisstaircase = expAK_staircase_function(thisstaircase);
          //data.dir_stair = thisstaircase.dir[1];
+
+         // Let's check a few things about the response
          toofewletterstyped = false;
          if (data.toofewletterstyped > 0 ){
            toofewletterstyped = true;}
@@ -274,21 +282,24 @@ var trial_word = {
         //console.log('config',config)
         //console.log('okonycroit',config.perm_blockorder.length)
 
-        if (thisstaircase.nTrials == config.nb_blockspercond * config.ntrialperblock - 1){
+        // Let's check we're not at the end of a block and need to update the staircase starting point
+        if (thisstaircase.nTrials == config.nb_blockspercond * config.ntrialperblock){
           thisstaircase.nTrials = 0;
           thisstaircase.nTrialSC = 0;
           var thatstheconditionwerein = config.perm_blockorderLABELS.indexOf(data.thiscondition);
           var nextcond = thatstheconditionwerein + 1;
           if (nextcond < config.perm_blockorder.length){
+            console.log('thatstheconditionwerein',thatstheconditionwerein)
+            console.log('nextcond',nextcond)
+            console.log('config.perm_blockorder[nextcond].stimlist',config.perm_blockorder[nextcond].stimlist)
           thisstaircase.SCval =   thisstaircase.SCvalstartppoint[config.perm_blockorder[nextcond].stimlist];
           console.log('UPDATE END BLOCK next thisstaircase.SCval is ',thisstaircase.SCval)
         }
           //thisstaircase.SCval =
         }
-
         console.log("NEXT thisstaircase.SCval", thisstaircase.SCval)
 
-        return [toofewletterstyped,toomanyletterstyped]
+        return [toofewletterstyped,toomanyletterstyped,thisstaircase]
         }
   }
 
@@ -657,5 +668,5 @@ config.saveData = downloadObjectAsJson;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-  return config
+  return [config,thisstaircase]
 }

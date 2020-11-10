@@ -3,9 +3,12 @@
 var config = {};
 var thisstaircase = {};
 
-config = EXP0_CONFIG();
+[config,thisstaircase] = EXP0_CONFIG();
+//console.log('This is the staircase after init',thisstaircase)
+
 //thisstaircase = conrfig.stair;
 
+// Initialize a few useful objects
 var Conf_slider = Object.assign({}, config.Conf_slider_template);
 var too_slow_response = {
   timeline: [config.too_slow_screen],
@@ -62,6 +65,8 @@ mytimeline = mytimeline.concat(config.instr_typingtask.typingtask);
 mytimeline = mytimeline.concat(config.instr_typingtask.confidence);
 mytimeline = mytimeline.concat(config.instr_typingtask.ready);
 }
+thisstaircase.SCval = config.stair.SCvalstartppoint[config.perm_blockorder[0].stimlist];
+console.log('WE WILL START WITH SCval at ',thisstaircase.SCval)
 for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // Loop across conditions (Word,  chunks, non-chunk, numbers)
 
 
@@ -73,8 +78,6 @@ for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // 
 
     // Reinitialize the STAIRCASE
     //config = EXP0_CONFIG(thiscondition);
-    thisstaircase.SCval = config.stair.SCvalstartppoint[config.perm_blockorder[0].stimlist];
-    console.log('WE WILL START WITH SCval at ',thisstaircase.SCval)
     //console.log('thisstaircase',thisstaircase)
 
 
