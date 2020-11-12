@@ -14,9 +14,9 @@ function EXP0_CONFIG(){
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
 config.debug = false; // Shorter stimulus sequence
-config.do_instrwelcome = false; // Welcoming instructions
-config.do_typingtest = false; // Shorter stimulus sequence
-config.do_instrmaintask = false; // Shorter stimulus sequence
+config.do_instrwelcome = true; // Welcoming instructions
+config.do_typingtest = true; // Shorter stimulus sequence
+config.do_instrmaintask = true; // Shorter stimulus sequence
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -29,7 +29,7 @@ config.do_instrmaintask = false; // Shorter stimulus sequence
 //---------------------------------------------------------------------- //
 // Structure ----------------------------------------------------------- //
 
-config.nb_blockspercond = 1;
+config.nb_blockspercond = 3;
 if (config.debug == true){config.nb_blockspercond = 1;}
 
 
