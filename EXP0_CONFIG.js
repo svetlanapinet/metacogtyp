@@ -29,7 +29,7 @@ config.do_instrmaintask = true; // Shorter stimulus sequence
 //---------------------------------------------------------------------- //
 // Structure ----------------------------------------------------------- //
 
-config.nb_blockspercond = 3;
+config.nb_blockspercond = 4;
 if (config.debug == true){config.nb_blockspercond = 1;}
 
 
