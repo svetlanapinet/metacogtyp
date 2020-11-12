@@ -17,6 +17,7 @@ config.debug = false; // Shorter stimulus sequence
 config.do_instrwelcome = true; // Welcoming instructions
 config.do_typingtest = true; // Shorter stimulus sequence
 config.do_instrmaintask = true; // Shorter stimulus sequence
+config.do_surveyend = true; // Shorter stimulus sequence
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -617,7 +618,69 @@ config.typtest_debrief_block3 = debrief_block3;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 //----------------------------------------------------------------------------------------//
-//--------------------------------- Usefull functions  -----------------------------------//
+//                                    Survey                                        //
+//----------------------------------------------------------------------------------------//
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+
+
+var survey_block1 = {
+    type: 'survey-text',
+    preamble: "<h3>Demographic Survey</h3>"+
+    "<div align='left'>The experiment is now over. We would greatly appreciate it if you could answer these few questions.",
+    questions: [
+        {prompt: 'What is your age?', value: '', rows: 1, columns: 3},
+        {prompt: 'What was the first language you learned to speak as a child?', value: '', rows: 1, columns: 30},
+        {prompt: 'What language do you currently speak at home?', value: '', rows: 1, columns: 30},
+        {prompt: 'What language do you currently speak at work?', value: '', rows: 1, columns: 30},
+        {prompt: 'At what age did you learn to speak English?', value: '', rows: 1, columns: 3},
+        ],
+};
+
+config.survey_block1 = survey_block1;
+
+var survey_block2 = {
+    type: 'survey-text',
+    preamble: "<h3>Demographic Survey</h3>",
+    questions: [
+        {prompt: 'For how many years have you been typing regularly?', value: '', rows: 1, columns: 3},
+        {prompt: 'How many hours a day do you spend typing?', value: '', rows: 1, columns: 3},
+        {prompt: 'How many fingers do you usually use when typing?', value: '', rows: 1, columns: 3},
+        ],
+};
+
+config.survey_block2 = survey_block2;
+
+var page_1_options = ["No high school diploma", "High school diploma or equivalent (e.g., GED)", "Some college but no degree", "Associate degree", "Bachelor's degree", "Graduate degree"];
+
+var multi_choice_block = {
+      type: 'survey-multi-choice',
+    preamble: "<h3>Demographic Survey</h3>",
+      questions: [
+      {prompt: "What is your gender?", options: ["Male", "Female", "Other"], required: true, horizontal: true,},
+      {prompt: "What is the highest level of education that you have achieved?", options: page_1_options, required: true, horizontal: false},
+      {prompt: "Do you look at your hands when you type?", options: ["Yes", "No"], required: true, horizontal: true,},
+      {prompt: "How did you learn to type?", options: ["Self-taught", "Formal training"], required: true, horizontal: true,}],
+  };
+
+config.survey_block3 = multi_choice_block;
+
+var survey_add = {
+    type: 'survey-text',
+    preamble: "<h3>Demographic Survey</h3>"+
+    "<div align='left'>If you have any additional comments, you can write them down here:",
+    questions: [{prompt: '', value: '', rows: 10, columns: 80}],
+  };
+
+config.survey_block4 = survey_add;
+
+//timeline_survey = [survey_block1, survey_block2, multi_choice_block, survey_add];
+
+
+
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+//----------------------------------------------------------------------------------------//
+//--------------------------------- Useful functions  -----------------------------------//
 //----------------------------------------------------------------------------------------//
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 

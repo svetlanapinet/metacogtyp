@@ -137,6 +137,15 @@ if (config.debug == true){
 //console.log("mytimeline",mytimeline)
 //console.log(config.list_word_shuf)
 
+
+// ******* Survey at the end *************************************************
+if (config.do_surveyend){
+mytimeline = mytimeline.concat(config.survey_block1);
+mytimeline = mytimeline.concat(config.survey_block2);
+mytimeline = mytimeline.concat(config.survey_block3);
+mytimeline = mytimeline.concat(config.survey_block4);
+}
+
 // *****************************************************************************
 // -----------------------------------------------------------------------------
 // EXECUTE TIMELINE ------------------------------------------------------------
