@@ -13,10 +13,11 @@ function EXP0_CONFIG(){
 //----------------------------------------------------------------------------------------//
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-config.debug = false; // Shorter stimulus sequence
+config.debug = true; // Shorter stimulus sequence
 config.do_instrwelcome = true; // Welcoming instructions
 config.do_typingtest = true; // Shorter stimulus sequence
 config.do_instrmaintask = true; // Shorter stimulus sequence
+config.do_maintask    = true; // The main typing task
 config.do_surveyend = true; // Shorter stimulus sequence
 
 
@@ -664,14 +665,25 @@ var multi_choice_block = {
 
 config.survey_block3 = multi_choice_block;
 
+
+var survey_computer = {
+      type: 'survey-multi-choice',
+    preamble: "<h3>Computer Survey</h3>",
+      questions: [
+      {prompt: "<div align='left'>Which operating system your computer uses?", options: ["PC/Windows", "Mac", "Linux"], required: true, horizontal: true,},
+      {prompt: "<div align='left'>Which web-browser do you use?", options: ["Google Chrome", "Mozilla Firefox", "Safari", "Internet Explorer","Microsoft Edge","Other"], required: true, horizontal: true},
+      {prompt: "<div align='left'>Did you experience problems during the experiment?", options: ["Display problems", "Key-press problems","No issue"], required: true, horizontal: true,}]
+  };
+config.survey_block4 = survey_computer;
+
 var survey_add = {
     type: 'survey-text',
-    preamble: "<h3>Demographic Survey</h3>"+
-    "<div align='left'>If you have any additional comments, you can write them down here:",
+    preamble: "<h3>Comments</h3>"+
+    "<div align='left'>If you have any additional comments or experienced any issues, please write them down here:",
     questions: [{prompt: '', value: '', rows: 10, columns: 80}],
   };
 
-config.survey_block4 = survey_add;
+config.survey_block5 = survey_add;
 
 //timeline_survey = [survey_block1, survey_block2, multi_choice_block, survey_add];
 

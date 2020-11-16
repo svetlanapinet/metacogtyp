@@ -67,7 +67,9 @@ mytimeline = mytimeline.concat(config.instr_typingtask.ready);
 }
 thisstaircase.SCval = config.stair.SCvalstartppoint[config.perm_blockorder[0].stimlist];
 console.log('WE WILL START WITH SCval at ',thisstaircase.SCval)
-for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // Loop across conditions (Word,  chunks, non-chunk, numbers)
+
+if (config.do_maintask){
+  for (var thiscond = 0;thiscond < config.perm_blockorder.length; thiscond++){ // Loop across conditions (Word,  chunks, non-chunk, numbers)
 
 
 
@@ -133,7 +135,7 @@ if (config.debug == true){
   mytimeline.push(shorttimeline);
   console.log(mytimeline);
 }
-
+}
 //console.log("mytimeline",mytimeline)
 //console.log(config.list_word_shuf)
 
@@ -144,6 +146,8 @@ mytimeline = mytimeline.concat(config.survey_block1);
 mytimeline = mytimeline.concat(config.survey_block2);
 mytimeline = mytimeline.concat(config.survey_block3);
 mytimeline = mytimeline.concat(config.survey_block4);
+mytimeline = mytimeline.concat(config.survey_block5);
+
 }
 
 // *****************************************************************************
