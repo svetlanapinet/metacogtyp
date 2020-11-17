@@ -13,7 +13,7 @@ function EXP0_CONFIG(){
 //----------------------------------------------------------------------------------------//
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
-config.debug = true; // Shorter stimulus sequence
+config.debug = false; // Shorter stimulus sequence
 config.do_instrwelcome = true; // Welcoming instructions
 config.do_typingtest = true; // Shorter stimulus sequence
 config.do_instrmaintask = true; // Shorter stimulus sequence
