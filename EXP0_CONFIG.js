@@ -450,7 +450,7 @@ instr_typingtest.typingparagraph = {
         "<div align='left'><p>For this experiment, we are looking for participants with a certain <b>level of spelling and typing proficiency</b>. </p>" +
         "<p>You will need to meet certain criteria in the practice trials to be able to continue.</p>"+
         "<p>Your typing proficiency will be assessed in a <b>typing test</b>. " +
-        "<p>You're going to have to <b>copy three texts</b>."
+        "<p>You're going to have to <b>copy one text</b>."
       }
 
 instr_typingtest.typingwords = {
