@@ -14,11 +14,11 @@ function EXP0_CONFIG(){
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
 config.debug = false; // Shorter stimulus sequence
-config.do_instrwelcome = true; // Welcoming instructions
-config.do_typingtest = true; // Shorter stimulus sequence
-config.do_instrmaintask = true; // Shorter stimulus sequence
+config.do_instrwelcome = false; // Welcoming instructions
+config.do_typingtest = false; // Shorter stimulus sequence
+config.do_instrmaintask = false; // Shorter stimulus sequence
 config.do_maintask    = true; // The main typing task
-config.do_surveyend = true; // Shorter stimulus sequence
+config.do_surveyend = false; // Shorter stimulus sequence
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
@@ -37,14 +37,14 @@ if (config.debug == true){config.nb_blockspercond = 1;}
 
 // Randomize the order of the blocks
 var factors = {
-   stimlist: [0,1,2,3]
+   stimlist: [0,1,2,3,4,5]
    //    stimlist: ['config.list_word_shuf','config.list_chunk_shuf', 'config.list_nonchunk_shuf','config.list_number_shuf']
 }
 
 config.perm_blockorder = jsPsych.randomization.factorial(factors, 1);
-var labels = ['words','chunks','nonchunks','numbers'];
+var labels = ['words','chunks','nonchunks','numbers_words','numbers_chunks','numbers_nonchunks'];
 var labels_ordered = [];
-for (var thislabel = 0;thislabel<4;thislabel++){
+for (var thislabel = 0;thislabel<6;thislabel++){
   labels_ordered.push(labels[config.perm_blockorder[thislabel].stimlist])
 }
 config.perm_blockorderLABELS = labels_ordered;
@@ -66,7 +66,7 @@ console.log('config.perm_blockorderLABELS',config.perm_blockorderLABELS)
   // Parameters that can be changed -------------------------------------- //
 
   thisstaircase.StepSize                  = 250;
-  thisstaircase.SCvalstartppoint          = [1000,1500,2000,2800];
+  thisstaircase.SCvalstartppoint          = [1000,1500,2000,2500,2500,2500];
   //thisstaircase.SCval                     = 1000;//thisstaircase.SCvalstartppoint[thiscondition];
   thisstaircase.min_step_size             = 16;
   thisstaircase.numTrials                 = 150;// nb max
@@ -148,6 +148,8 @@ instr_block.push(wordblock);
 instr_block.push(chunkblock);//chunkblock,nonchunkblock,numberblock};
 instr_block.push(nonchunkblock);
 instr_block.push(numberblock);
+instr_block.push(numberblock);
+instr_block.push(numberblock);
 config.instr_block = instr_block;
 
 //---------------------------------------------------------------------- //
@@ -196,37 +198,46 @@ config.list_nonchunk_shuf = config.list_nonchunk_shuf.slice(0, config.ntrialperb
 
 
 // Convert the non chunk into number stimuli
-var thisstim;
-var thisletter;
-var number_list = [];
-for (thisstim = 0;thisstim < config.ntrialperblock; thisstim++){ // Loop across
-  var thistring = []
-  for (thisletter = 0;thisletter < nonchunk_lists[thisstim].stimulus.length;thisletter++){
-    //console.log('thistring',thistring)
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "w"){
-      thistring.push("1")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "e"){
-      thistring.push("2")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "r"){
-      thistring.push("3")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "t"){
-      thistring.push("4")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "u"){
-      thistring.push("6")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "i"){
-      thistring.push("7")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "o"){
-      thistring.push("8")}
-    if (nonchunk_lists[thisstim].stimulus[thisletter] == "p"){
-      thistring.push("9")}
-    }
-    var element = {}
-    element.stimulus = thistring.join("");
-    element.typestim = "numbers";
-    number_list.push(element);
-};
-config.list_number_shuf = jsPsych.randomization.shuffle(number_list);
+for (thiscond = 0;thiscond < 3;thiscond++){
+    if (thiscond == 0){thislist = config.list_word_shuf}
+    if (thiscond == 1){thislist = config.list_chunk_shuf}
+    if (thiscond == 2){thislist = config.list_nonchunk_shuf}
+    var thisstim;
+    var thisletter;
+    var number_list = [];
+    for (thisstim = 0;thisstim < config.ntrialperblock; thisstim++){ // Loop across
+      var thistring = []
+      for (thisletter = 0;thisletter < thislist[thisstim].stimulus.length;thisletter++){
+        //console.log('thistring',thistring)
+        if (thislist[thisstim].stimulus[thisletter] == "w"){
+          thistring.push("1")}
+        if (thislist[thisstim].stimulus[thisletter] == "e"){
+          thistring.push("2")}
+        if (thislist[thisstim].stimulus[thisletter] == "r"){
+          thistring.push("3")}
+        if (thislist[thisstim].stimulus[thisletter] == "t"){
+          thistring.push("4")}
+        if (thislist[thisstim].stimulus[thisletter] == "u"){
+          thistring.push("6")}
+        if (thislist[thisstim].stimulus[thisletter] == "i"){
+          thistring.push("7")}
+        if (thislist[thisstim].stimulus[thisletter] == "o"){
+          thistring.push("8")}
+        if (thislist[thisstim].stimulus[thisletter] == "p"){
+          thistring.push("9")}
+        }
+        var element = {}
+        element.stimulus = thistring.join("");
+        if (thiscond == 0){element.typestim = "numbers_words";}
+        if (thiscond == 1){element.typestim = "numbers_chunks";}
+        if (thiscond == 2){element.typestim = "numbers_nonchunks";}
 
+        number_list.push(element);
+  };
+  if (thiscond == 0){config.list_number_words_shuf = jsPsych.randomization.shuffle(number_list)};
+  if (thiscond == 1){config.list_number_chunks_shuf = jsPsych.randomization.shuffle(number_list)};
+  if (thiscond == 2){config.list_number_nonchunks_shuf = jsPsych.randomization.shuffle(number_list)};
+}
 
 
 
@@ -313,8 +324,9 @@ var thisstimlist = [];
 thisstimlist.push(config.list_word_shuf);
 thisstimlist.push(config.list_chunk_shuf);
 thisstimlist.push(config.list_nonchunk_shuf);
-thisstimlist.push(config.list_number_shuf);
-
+thisstimlist.push(config.list_number_words_shuf);
+thisstimlist.push(config.list_number_chunks_shuf);
+thisstimlist.push(config.list_number_nonchunks_shuf);
 config.stimlist = thisstimlist;
 
 
