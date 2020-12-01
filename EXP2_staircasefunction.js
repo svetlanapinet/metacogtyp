@@ -42,6 +42,7 @@ function expAK_staircase_function(thisstaircase){
             dir[1] = "up";
             reverse = check_reversal(dir); // Check if there was a reversal in direction as a result of the step up
       }
+      
 
 
       // Set limits on SCval

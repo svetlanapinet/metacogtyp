@@ -108,7 +108,7 @@ if (config.do_maintask){
     var timelineTrials = {
       timeline: [config.stim_trial_word ,feedbackTimePressure,feedbackToomanyletters,Conf,config.stim_pause], //Conf_slider,
       //timeline_variables: eval(config.perm_blockorder[thiscond].stimlist)
-      timeline_variables: config.stimlist[thiscondition]
+      timeline_variables: jsPsych.randomization.shuffle(config.stimlist[thiscondition])
     }
 
 
