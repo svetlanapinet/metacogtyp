@@ -104,7 +104,7 @@ config.len_conf               = 600000; //3000; MAX DURATION OF THE CONFIDENCE
 config.len_fixation           = 900;//900;
 config.len_respmapremind      = 2000;
 config.len_word               = 3000;
-config.len_TimePressureScreen  = 500;
+config.len_TimePressureScreen  = 1500;
 //---------------------------------------------------------------------- //
 // Block onset  ----------------------------------------------------------- //
 
@@ -257,11 +257,7 @@ var trial_word = {
 
     on_finish: function(data){
 
-         // Let's display some info on the screen
-         console.log('ACC', data.acc)
-         console.log('Stairecase Val', thisstaircase.SCval)
-         console.log('data.thiscondition',data.thiscondition)
-         console.log("CURRENT thisstaircase.SCval", thisstaircase.SCval)
+
 
          // Let's check a few things about the response
          toofewletterstyped = false;
@@ -281,7 +277,12 @@ var trial_word = {
          thisstaircase.nTrialSC += 1;
          thisstaircase.nTrials += 1;
          thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(right_answer);
+
+         // Let's display some info on the screen
          console.log("nTrialSC", thisstaircase.nTrialSC)
+         console.log('data.thiscondition',data.thiscondition)
+         console.log("CURRENT thisstaircase.SCval", thisstaircase.SCval)
+         console.log('ACC', right_answer)
 
          // Save parameters of staircase in data structure // add back1/back2?
          data.SC_SCval                = thisstaircase.SCval;
