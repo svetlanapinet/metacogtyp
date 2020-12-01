@@ -263,9 +263,21 @@ var trial_word = {
          console.log('data.thiscondition',data.thiscondition)
          console.log("CURRENT thisstaircase.SCval", thisstaircase.SCval)
 
+         // Let's check a few things about the response
+         toofewletterstyped = false;
+         if (data.toofewletterstyped > 0 ){
+           toofewletterstyped = true;}
+           toomanyletterstyped = false;
+         if (data.toofewletterstyped < 0 ){
+             toomanyletterstyped = true;}
+
+
         // Update where we are in the staircase
-         var right_answer = data.acc;
-         data.CorrectPerceptual = data.acc;
+         if (data.toofewletterstyped == 0){
+           var right_answer = data.acc;}
+           if (data.toofewletterstyped != 0){
+             var right_answer = 999;}
+         data.CorrectPerceptual = right_answer;
          thisstaircase.nTrialSC += 1;
          thisstaircase.nTrials += 1;
          thisstaircase.responseMatrix = thisstaircase.responseMatrix.concat(right_answer);
@@ -283,13 +295,7 @@ var trial_word = {
          thisstaircase = expAK_staircase_function(thisstaircase);
          //data.dir_stair = thisstaircase.dir[1];
 
-         // Let's check a few things about the response
-         toofewletterstyped = false;
-         if (data.toofewletterstyped > 0 ){
-           toofewletterstyped = true;}
-           toomanyletterstyped = false;
-         if (data.toofewletterstyped < 0 ){
-             toomanyletterstyped = true;}
+
 
         //console.log('data',data)
         //console.log('config',config)
