@@ -31,7 +31,7 @@ config.do_surveyend = true; // Shorter stimulus sequence
 //---------------------------------------------------------------------- //
 // Structure ----------------------------------------------------------- //
 
-config.nb_blockspercond = 4;
+config.nb_blockspercond = 3;
 if (config.debug == true){config.nb_blockspercond = 1;}
 
 
@@ -104,7 +104,7 @@ config.len_conf               = 600000; //3000; MAX DURATION OF THE CONFIDENCE
 config.len_fixation           = 900;//900;
 config.len_respmapremind      = 2000;
 config.len_word               = 3000;
-config.len_TimePressureScreen  = 1500;
+config.len_TimePressureScreen  = 2500;
 //---------------------------------------------------------------------- //
 // Block onset  ----------------------------------------------------------- //
 
