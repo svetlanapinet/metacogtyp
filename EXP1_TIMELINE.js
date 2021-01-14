@@ -114,6 +114,7 @@ if (config.do_maintask){
 
 
         //timeline.push(after_choice);
+    //console.log("instr",config.instr_block[thiscondition])
 
     // Replicate according to the number of block you want for each condition
     for (var thisblockrepet = 1; thisblockrepet <= config.nb_blockspercond; thisblockrepet++){

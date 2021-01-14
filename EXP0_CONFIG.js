@@ -31,7 +31,7 @@ config.do_surveyend = true; // Shorter stimulus sequence
 //---------------------------------------------------------------------- //
 // Structure ----------------------------------------------------------- //
 
-config.nb_blockspercond = 3;
+config.nb_blockspercond = 2;
 if (config.debug == true){config.nb_blockspercond = 1;}
 
 
